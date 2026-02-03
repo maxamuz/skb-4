@@ -1,0 +1,7 @@
+name = Migration skb-4.ru site
+description = System for migrate content <a href="http://skb-4.ru">skb-4.ru</a> site to drupal 7 with mapping data
+package = skb-4
+core = 7.x
+configure = admin/config/development/migrate_skb4
+
+dependencies[] = entity

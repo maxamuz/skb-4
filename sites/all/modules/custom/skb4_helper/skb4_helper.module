@@ -1,0 +1,1176 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ */
+function skb4_helper_block_info() {
+
+  $blocks['skb4_helper_catalog'] = array(
+    'info' => 'Каталог',
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['skb4_helper_catalog_else'] = array(
+    'info' => 'Другие разделы каталога',
+    'cache' => DRUPAL_NO_CACHE
+  );  
+  $blocks['skb4_helper_catalog_for_menu'] = array(
+    'info' => 'Каталог главного меню',
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['skb4_helper_catalog_for_footer'] = array(
+    'info' => 'Каталог для подвала',
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['skb4_helper_brend_products'] = array(
+    'info' => 'Товары определённого производителя',
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['skb4_helper_news_brend'] = array(
+    'info' => 'Бренд новости',
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['skb4_helper_search_block'] = array(
+    'info' => t('Search form') .' search API',
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['skb4_helper_search_block2'] = array(
+    'info' => t('Search form') .' search API 2',
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['skb4_helper_search_block3'] = array(
+    'info' => t('Search form') .' search API 3',
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['skb4_helper_documents_brend'] = array(
+    'info' => 'Бренд документации',
+    'cache' => DRUPAL_NO_CACHE
+  );
+  $blocks['skb4_helper_current_offer'] = array(
+    'info' => 'Актуальные предложения',
+    'cache' => DRUPAL_NO_CACHE
+  );
+  /*$blocks['skb4_helper_brand_current_offer'] = array(
+    'info' => 'Актуальные предложения в бренде',
+    'cache' => DRUPAL_NO_CACHE
+  );*/
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function skb4_helper_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+
+    case 'skb4_helper_catalog':
+    case 'skb4_helper_catalog_else':
+    global $user;
+
+    	// drupal_add_js(drupal_get_path("module", "skb4_helper").'/skb4_helper.js');
+
+    	$tree = taxonomy_get_tree(1, 0);
+
+    	$categories = taxonomy_get_tree(1, 0, 1);
+    	$content = "";
+
+			foreach($categories as $t) {
+        $sub_category = '';
+			  $term_wrapper = entity_metadata_wrapper('taxonomy_term',$t->tid);
+			  
+        $sub_catas = taxonomy_get_tree(1, $t->tid);
+        $items = array();
+        foreach ($sub_catas as $sc) {
+          
+          // $sub_category[] = '<span class="sub-category" catid="'.$sc->tid.'">'.$sc->name.'</span>';
+          
+          // $query = db_select('field_data_field_brand_categories', 'c')->fields('c', array('entity_id'))
+          //             ->condition('c.field_brand_categories_tid', $sc->tid)->condition('c.bundle', 'brand');
+          // $query->leftJoin('node', 'n', 'n.nid = c.entity_id');
+          // $query->addField('n', 'title', 'title');
+          // $query->orderBy('n.title', 'ASC');
+          // $nids = $query->execute()->fetchAllKeyed();
+          
+          
+          // foreach ($nids as $nid => $title) {
+            $items[] = l($sc->name, 'taxonomy/term/'.$sc->tid);
+          // }
+        }
+        $category_sub_class = '';
+        if ($items) {
+          $sub_category .= theme('item_list', array('items' => $items));
+          $category_sub_class = ' with-subcategories';
+        }
+        $content .= '<div class="category'.$category_sub_class.'" catid="'.$t->tid.'"><span class="mobile-close"></span>
+          <a href="'.url('taxonomy/term/'.$t->tid).'" >'.
+            theme('image_style', array('style_name' => 'product_category_preview', 'path' => $term_wrapper->field_category_image->value()['uri'])).'</a>
+            <h3><a href="'.url('taxonomy/term/'.$t->tid).'" >'.$term_wrapper->name->value().'</a></h3>
+            <div class="sub-category">'.$sub_category.'</div></div>';
+			}
+			if ($content != '')  {
+				$content = '<div class="categories-wrapper">'.$content.'</div><div class="catalog-link">'.l('Весь каталог','catalog').'</div>';
+			}
+			
+      $block['subject'] = 'Каталог';
+			if ($delta == 'skb4_helper_catalog_else') {
+        $block['subject'] = 'Другие разделы каталога';
+      }
+      $block['content'] = $content;
+      break;
+    
+    case 'skb4_helper_catalog_for_menu':
+
+      $tree = taxonomy_get_tree(1, 0);
+
+      $categories = taxonomy_get_tree(1, 0, 1);
+      $items = array();
+      $content = "";
+      foreach($categories as $t) {
+        // $term_wrapper = entity_metadata_wrapper('taxonomy_term',$t->tid);
+        $items[] = l($t->name, 'taxonomy/term/'.$t->tid);
+      }
+      if (count($items) > 1) {
+        $cat_parts = array_chunk($items, ceil(count($items)/2));
+      } else {
+        $cat_parts = array();
+        $cat_parts[] = $items;
+      }
+      $parts = array();
+      foreach ($cat_parts as $part) {
+        $parts[] = theme('item_list', array('items' => $part));
+      }
+      $content = '<div class="category-wrapper">'.implode("", $parts).'</div>';
+
+      $query = db_select('node', 'n')->fields('n', array('nid', 'title'))
+                ->condition('n.type', 'brand')->condition('n.status', 1)->orderBy('n.title', 'ASC');
+      $query->join('field_data_field_brand_general', 'g', " g.entity_id = n.nid ");
+      $query->condition('g.field_brand_general_value', 1);
+      $query->range(0, 13);
+      $brands = $query->execute()->fetchAllKeyed();
+
+      if ($brands) {
+        $items = array();
+        foreach ($brands as $nid => $title) {
+          $items[] = l($title, 'node/'.$nid);
+        }
+        $content .= '<div class="brands-wrapper">'.theme('item_list', array('items' => $items)).'</div>';
+        $content .= '<div class="more-link">'.l('Все поставщики', 'manufactures').'</div>';
+      }
+      
+      $block['content'] = $content;
+
+      break;
+
+    case 'skb4_helper_catalog_for_footer':
+
+      $tree = taxonomy_get_tree(1, 0);
+
+      $categories = taxonomy_get_tree(1, 0, 1);     
+      $items = array();
+      $content = "";
+      foreach($categories as $t) {
+        // $term_wrapper = entity_metadata_wrapper('taxonomy_term',$t->tid);
+        $items[] = l($t->name, 'taxonomy/term/'.$t->tid);
+      }
+      $content = '<div class="category-wrapper">'.theme('item_list', array('items' => $items)).'</div>';
+      
+      $block['content'] = $content;
+
+      break;
+    case 'skb4_helper_brend_products':
+
+    		if (arg(0) == 'node' && arg(1) && is_numeric(arg(1))) {
+    			$nid = arg(1);
+    			$node_wrapper = entity_metadata_wrapper('node', $nid);
+    			$brend = $node_wrapper->field_product_brand->value();
+    			$view = views_embed_view('other_products', 'block', $brend->nid);
+    			$block['subject'] = 'Другие товары '.$brend->title;
+    			$block['content'] = $view;	
+    		}
+    	break;
+    case "skb4_helper_news_brend":
+        if (arg(0) == 'node' && arg(1) && is_numeric(arg(1))) {
+          $nid = arg(1);
+          $node_wrapper = entity_metadata_wrapper('node', $nid);
+          if ($node_wrapper->type->value() == 'news' && $node_wrapper->field_news_brend->value()) {
+            $brand = $node_wrapper->field_news_brend->value();
+            $cats = array();
+            foreach($brand->field_brand_category[LANGUAGE_NONE] as $t) {
+              $term = taxonomy_term_load($t['tid']);
+              $cats[] = l($term->name, 'taxonomy/term/'.$term->tid);
+            }
+            $node_view = node_view($brand, 'teaser');
+            $block['content'] = render($node_view) . theme('item_list', array('items' => $cats));
+          }
+        }
+    break;
+    case 'skb4_helper_documents_brend':
+      $nodes = db_select('node', 'n')->fields('n', array('nid', 'title'))
+                ->condition('n.type', 'document')->condition('n.status', 1)->orderBy('n.title', 'ASC')
+                ->execute()->fetchAllKeyed();
+      $items = array();
+      foreach ($nodes as $nid => $title) {
+        $items[] = l($title, 'documents', array('fragment' => 'document-'.$nid));
+      }
+      if ($items) {
+        $block['header'] = 'По производителям';
+        $block['content'] = theme('item_list', array('items' => $items));
+      }
+    break;
+    case 'skb4_helper_search_block':
+    case 'skb4_helper_search_block2':
+      $block['header'] = t('Search');
+      $block['content'] = drupal_get_form('skb4_helper_search_form');
+      break;
+    case 'skb4_helper_search_block3':
+      $block['header'] = t('Search');
+      $block['content'] = drupal_get_form('skb4_helper_search_form', 'Поиск');
+      break;
+
+    case 'skb4_helper_current_offer':
+      $content = '';
+      $args = arg();
+      // актуальные предложения
+      $nids = db_select('node', 'n')->fields('n', array('nid'))->condition('n.type', 'current_offer')->condition('n.status', 1)
+                //->orderBy('n.title', 'ASC')
+        ->orderBy('n.created', 'DESC')
+        ->execute()->fetchCol();
+      /*if ($delta == 'skb4_helper_brand_current_offer' && count($args) == 2 && $args[0] == 'node' && is_numeric($args[1])) {
+        $query = db_select('node', 'n')->fields('n', array('nid'))->orderBy('n.title', 'ASC')
+                   ->condition('n.type', 'current_offer')->condition('n.status', 1);
+        $query->leftJoin('field_data_field_offer_brand', 'ob', 'ob.bundle = "current_offer" AND ob.entity_id = n.nid ');
+        $query->condition('ob.field_offer_brand_nid', $args[1]);
+        $nids = $query->execute()->fetchCol();
+        // $query->addField('ob', 'field_offer_brand_nid', '');
+      }*/
+      $rows = array();
+      $header = array('№', 'Бренд/ Производитель', 'Наименование/ описание', 'Ед. изм.', 'Цена за ед. с НДС', 'Минимальная партия/сумма', 'Срок поставки');
+      $i = 1;
+      $link_image = theme('image', array('path' => drupal_get_path('theme', 'skb4').'/svg/link.svg'));
+      foreach($nids as $nid) {
+        $nw = entity_metadata_wrapper('node', $nid);
+        $rows[] = array(
+          $i,
+          //l($nw->field_offer_brand->value()->title, 'node/'.$nw->field_offer_brand->value()->nid),
+          !empty($nw->field_offer_brand->value()) ? $nw->field_offer_brand->value()->title : '',
+          l($nw->title->value().' '.$link_image, 'node/'.$nid, array('html' => TRUE)),
+          array('data' => $nw->field_offer_units->value(), 'class' => array('center')),
+          array('data' => $nw->field_offer_price->value(), 'class' => array('right')),
+          array('data' => $nw->field_offer_min_amount->value(), 'class' => array('right')),
+          array('data' => $nw->field_offer_delivery_time->value(), 'class' => array('right')),
+        );
+        $i++;
+      }
+
+      if ($rows) {
+        $content = theme('table', array('header' => $header, 'rows' => $rows, 'sticky' => FALSE, 'attributes' => array('id' => 'current-offers')));
+      }
+      $block['subject'] = 'Актуальные предложения';
+      $block['content'] = $content;
+    break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function skb4_helper_menu() {
+  
+  $items['catalog'] = array(
+    'title' => 'Каталог',
+    'page callback' => 'skb4_helper_catalog_page',
+    'access arguments' => array('access content'),    
+  );
+  $items['manufactures'] = array(
+    'title' => 'Поставщики',
+    'page callback' => 'skb4_helper_providers_page',
+    'access arguments' => array('access content'),    
+  );
+  $items['get-all-brand-from-category/%'] = array(
+    'title' => 'Brand from one category',
+    'page callback' => '_load_all_brends_from_category',
+    'page arguments' => array(1),
+    'delivery callback' => 'ajax_deliver',
+    'access arguments' => array('access content'),
+  );
+  $items['catalog/category/%taxonomy_term'] = array(
+  	'title' => 'Каталог',
+  	'title callback' => 'skb4_helper_catalog_category_title',
+  	'title arguments' => array(2),
+    'page callback' => 'skb4_helper_catalog_category_page',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+  );
+  $items['catalog/order/%node'] = array(
+  	'title' => 'Заказ оборудования',
+    'page callback' => 'skb4_helper_catalog_order',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),   
+    'type' => MENU_CALLBACK,
+  );
+  $items['skb4-helper/category-products/%/%'] = array(
+  	'title' => 'Brand products',
+    'page callback' => 'skb4_helper_get_brand_products_callback',
+    'page arguments' => array(2,3),
+    'delivery callback' => 'ajax_deliver', // данные, возвращённые ф-ей last_comments_ajax_callback(), будут отданы в json формате
+    'access arguments' => array('access content'),
+  );
+
+  $items['admin/config/search/skb4'] = [
+    'title' => 'Skb4',
+    'description' => t('Settings'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['skb4_helper_settings'],
+    'access arguments' => array('administer skb4 helper'),
+  ];
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function skb4_helper_permission() {
+  return array(    
+    'administer skb4 helper' =>  array(
+      'title' => t('administer skb4 helper'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function skb4_helper_menu_alter(&$items) {
+  
+  $items['taxonomy/term/%taxonomy_term']['page callback'] = 'skb4_helper_taxonomy_term_alter';
+}
+
+/**
+ *
+ */
+function skb4_helper_catalog_page() {
+
+  $args = arg();
+  if (count($args) !== 1) {
+    drupal_not_found();
+    drupal_exit();
+  }
+	
+	// drupal_add_js(drupal_get_path("module", "skb4_helper").'/skb4_helper.js');
+  $desc = variable_get('skb4_helper_catalog_desc', '');
+  if ($desc != '') {
+    $meta_description = array(
+      '#type' => 'html_tag',
+      '#tag' => 'meta',
+      '#attributes' => array(
+        'name' => 'description',
+        'content' => $desc,
+      )
+    );
+    drupal_add_html_head($meta_description, 'meta_description');
+  }
+
+  $tree = taxonomy_get_tree(1, 0);
+
+  $categories = taxonomy_get_tree(1, 0, 1);
+  $content = "";
+  foreach($categories as $t) {
+    $sub_category = '';
+    $term_wrapper = entity_metadata_wrapper('taxonomy_term',$t->tid);
+    
+    $sub_catas = taxonomy_get_tree(1, $t->tid);
+    $items = array();
+    foreach ($sub_catas as $sc) {
+      
+      // $sub_category[] = '<span class="sub-category" catid="'.$sc->tid.'">'.$sc->name.'</span>';
+      
+      // $query = db_select('field_data_field_brand_categories', 'c')->fields('c', array('entity_id'))
+      //             ->condition('c.field_brand_categories_tid', $sc->tid)->condition('c.bundle', 'brand');
+      // $query->leftJoin('node', 'n', 'n.nid = c.entity_id');
+      // $query->addField('n', 'title', 'title');
+      // $query->orderBy('n.title', 'ASC');
+      // $nids = $query->execute()->fetchAllKeyed();
+      
+      
+      // foreach ($nids as $nid => $title) {
+        $items[] = l($sc->name, 'taxonomy/term/'.$sc->tid);
+      // }
+    }
+    $category_sub_class = '';
+    if ($items) {
+      $sub_category .= theme('item_list', array('items' => $items));
+      $category_sub_class = ' with-subcategories';
+    }
+    $content .= '<div class="category'.$category_sub_class.'" catid="'.$t->tid.'">
+      <a href="'.url('taxonomy/term/'.$t->tid).'" >'.
+        theme('image_style', array('style_name' => 'product_category_preview', 'path' => $term_wrapper->field_category_image->value()['uri'])).'</a>
+        <h3><a href="'.url('taxonomy/term/'.$t->tid).'" >'.$term_wrapper->name->value().'</a></h3>
+        <div class="sub-category">'.$sub_category.'</div></div>';
+  }
+  if ($content != '')  {
+    $content = '<div class="categories-wrapper">'.$content.'</div>';
+  }
+      
+	return $content;
+} 
+
+/**
+ *
+ */
+function skb4_helper_catalog_category_title($term) {
+	return $term->title; 
+}
+
+/**
+ *
+ */
+function skb4_helper_catalog_category_page($term) {
+	dsm($term);
+	return "";
+}
+
+/**
+ *
+ */
+function _skb4_helper_taxonomy_get_tree($tid) {
+  $tree = taxonomy_get_tree(1, $tid, 1);
+  $items = array();
+  if ($tree) {
+    foreach($tree as $t) {
+      $childs  = _skb4_helper_taxonomy_get_tree($t->tid);
+      $with_child = '';
+      if ($childs) 
+        $with_child = '<span class="with-child"></span>';
+      $items[] = '<div class="parent-link">'.l($t->name, 'taxonomy/term/'.$t->tid ) . $with_child .'</div>' . $childs;
+    }
+  }
+  if ($items) {
+    return theme('item_list', array('items' => $items));
+  }
+  return '';
+}
+/**
+ *
+ */
+function skb4_helper_taxonomy_term_alter($term) { //dsm($term);
+	// If there is a menu link to this term, the link becomes the last part of
+  // the active trail, and the link name becomes the page title. Thus, we must
+  // explicitly set the page title to be the term title.
+  drupal_set_title($term->name);
+
+  // Build breadcrumb based on the hierarchy of the term.
+  $current = (object) array(
+    'tid' => $term->tid,
+  );
+
+  // @todo This overrides any other possible breadcrumb and is a pure hard-coded
+  //   presumption. Make this behavior configurable per vocabulary or term.
+  $parents = taxonomy_get_parents($term->tid); //dsm($parents);
+  $breadcrumb = array();
+  while ($parents = taxonomy_get_parents($current->tid)) {
+    $current = array_shift($parents);
+    $breadcrumb[] = l($current->name, 'taxonomy/term/' . $current->tid);
+  }
+  if ($parents) {
+  	$breadcrumb[] = l($parents[0]->name, 'taxonomy/term/'.$parents[0]->tid);
+  }
+  $breadcrumb[] = l('Каталог', 'catalog');
+  $breadcrumb[] = l(t('Home'), NULL);
+  $breadcrumb = array_reverse($breadcrumb);
+  drupal_set_breadcrumb($breadcrumb);
+  
+
+  // Set the term path as the canonical URL to prevent duplicate content.
+  $uri = entity_uri('taxonomy_term', $term);
+  drupal_add_html_head_link(array(
+    'rel' => 'canonical',
+    'href' => url($uri['path'], $uri['options']),
+  ), TRUE);
+
+  // Set the non-aliased path as a default shortlink.
+  drupal_add_html_head_link(array(
+    'rel' => 'shortlink',
+    'href' => url($uri['path'], array_merge($uri['options'], array(
+      'alias' => TRUE,
+    ))),
+  ), TRUE);
+
+  $content = $brends = $products = $subcats = '';
+  $sub_tids = array($term->tid);
+  $nav_links = array();
+
+  $categories = "";
+  $catalog = taxonomy_get_tree(1, 0, 1);
+  $cat_items = array();
+  foreach($catalog as $cat) {
+    $childs  = _skb4_helper_taxonomy_get_tree($cat->tid);
+    $with_child = $div_class = '';
+    if ($childs) {
+      $with_child = '<span class="with-child"></span>';
+      $div_class = ' class="parent-link"';
+    }
+    $cat_items[] = '<div '.$div_class.'>'.l($cat->name, 'taxonomy/term/'.$cat->tid ) . $with_child .'</div>' . $childs;
+  }
+  if ($cat_items) {
+    $subcats = '<div class="cats js-sticky-widget" data-margin-top="170" data-sticky-class="sticky"><h3>Каталог</h3><span class="toggle-list"></span>' .
+     theme('item_list', array('items' => $cat_items)) . '</div>';
+  }
+
+  // if main category then list sub-categories, else products list
+  $parents = taxonomy_get_parents($term->tid);
+  $tree = taxonomy_get_tree(1, $term->tid, 1);
+  if (!count($parents) && $tree) {
+
+  	
+  	// $cat_items = array();
+  	foreach ($tree as $t) {
+  		$sub_tids[] = $t->tid;
+
+      // $cat_items[] = l($t->name, 'taxonomy/term/'.$t->tid) . _skb4_helper_taxonomy_get_tree($t->tid);
+  	}
+    /*if ($cat_items) {
+      $subcats = '<div class="sub-cats"><h3>Каталог</h3>' .
+       theme('item_list', array('items' => $cat_items)) . '</div>';
+    }*/
+  }
+
+  $query = db_select('field_data_field_brand_category', 'c')->fields('c', array('entity_id'))
+                      ->condition('c.field_brand_category_tid', $sub_tids, 'IN')->condition('c.bundle', 'brand');
+  $query->leftJoin('node', 'n', 'n.nid = c.entity_id');   
+  $query->leftJoin('field_data_field_brend_logo', 'l', ' l.entity_id = n.nid ');
+  $query->addField('l', 'field_brend_logo_fid', 'logo');
+  $query->leftJoin('field_data_field_brand_general', 'g', 'g.entity_id = n.nid');
+  $query->addField('n', 'title', 'title');
+  $query->distinct();
+  $query->orderBy('g.field_brand_general_value', 'DESC');
+  $query->orderBy('n.title', 'ASC');
+  $logos = $query->execute()->fetchAll();
+
+  $items = array();
+  $first_brand = "";
+  foreach ($logos as $log) { 
+    $brand_content = '<div class="brend">';
+    if ($log->logo != '') {
+      $file = file_load($log->logo);
+      if ($file && $file->uri != '') {
+        $brand_content .= l(theme('image_style', array(
+          'style_name' => 'brand_logo_normal',
+          'path' => $file->uri)), 'node/'.$log->entity_id, array('html' => TRUE));
+      }
+    }
+    $brand_content .= '<h3>'.l($log->title, 'node/'.$log->entity_id).'</h3></div>';
+    // rexona centra on top
+    if ($log->entity_id == 668) {
+      array_unshift($items, $brand_content);
+    } else {
+      $items[] = $brand_content;
+    }
+  }
+
+  if ($items) {
+    $nav_links[] = l('Производители', 'taxonomy/term/'.$term->tid, array('fragment' => 'brands'));
+    $brends = '<div class="brends-wrapper"><a id="brands" class="anchor"></a><h2>Мы предлагаем материалы следующих производителей:</h2>
+    <div class="brends-logo-wrapper">'.implode('', $items).'</div></div>';
+  }
+
+  	//
+	$query = db_select('taxonomy_index', 't')->fields('t', array('nid'))->orderBy('t.created', 'DESC');
+	$query->condition('t.tid', $term->tid);
+	$query->join('node', 'n', " n.nid = t.nid AND n.type = 'product' ");
+    //$query->range(0,10);
+	$nids = $query->execute()->fetchCol();
+	$product_more = count($nids) > 8 ? TRUE : FALSE ;
+	$nodes_count = count($nids);
+	$nids = array_slice($nids, 0, 8);
+	if ($nids) {
+    $nav_links[] = l('Товары', 'taxonomy/term/'.$term->tid, array('fragment' => 'products'));
+    $nodes = node_load_multiple($nids);
+    $build = array(
+    	'#prefix' => '<div class="category-products-wrapper"><a id="products" class="anchor"></a><h2>Товары</h2>
+    		<div id="category-products-block-content" class="content">',
+    	'#suffix' => '</div></div>',
+    );
+    if ($product_more) {
+      $build['#suffix'] = '</div><a class="more use-ajax" href="/skb4-helper/category-products/'.$term->tid.'/1/nojs">Показать ещё</a></div>';
+    }
+    $build += node_view_multiple($nodes);
+    /*$build['pager'] = array(
+      '#theme' => 'pager',
+      '#weight' => 5,
+    );*/
+    $products = render($build);
+    drupal_add_library('system', 'drupal.ajax');
+    drupal_add_library('system', 'jquery.form');
+  }
+  
+  $term_view = taxonomy_term_view($term, 'full');
+  if (!empty($term_view['field_category_video'])) {
+    $nav_links[] = l('Видео', 'taxonomy/term/'.$term->tid, array('fragment' => 'video'));
+  }
+  if (!empty($term_view['description'])) {
+    $nav_links[] = l('Описание', 'taxonomy/term/'.$term->tid, array('fragment' => 'category-content'));  
+  }
+  if ($nav_links) { 
+    $term_view['nav_links'] = array('#markup' => theme('item_list', array('items' => $nav_links)));
+  }
+  if ($subcats) {
+    $term_view['subcats'] = array('#markup' => $subcats);
+    drupal_add_js(drupal_get_path('module', 'skb4_helper').'/sticky.js');
+    drupal_add_js(drupal_get_path('module', 'skb4_helper').'/skb4_helper.js');
+  }
+  $term_view['brands'] = array('#markup' => $brends);
+  $term_view['products'] = array('#markup' => $products);
+  $content .= '<div class="term-listing-heading">'.render($term_view).'</div>';
+  
+  return $content;
+}
+
+/**
+ *
+ */
+function skb4_helper_catalog_order($node) {
+
+	$form_node = node_load(11);
+  foreach ($form_node->webform['components'] as $key => $component) {
+    if ($component['form_key'] == '_what') { 
+      $what = '';
+      if ($node->type == 'brand') {
+        $what = $node->title;
+      } elseif($node->type == 'product') {
+        $brand = node_load($node->field_product_brand[LANGUAGE_NONE][0]['nid']);
+        $what = $brand->title .' - '.$node->title;
+      }
+      if ($what != '')
+        $form_node->webform['components'][$key]['value'] = $what;
+    }
+    if ($component['form_key'] == '_site_page_url') {
+      $form_node->webform['components'][$key]['value'] = url('node/'.$node->nid, array('absolute' => TRUE));
+    }
+  }
+  
+  $form_view = node_view($form_node, 'full');
+  $form_view['webform']['#page'] = TRUE;
+  return render($form_view);
+}
+
+/**
+ *
+ */
+function skb4_helper_search_form($form, &$form_state, $input_text = 'Поиск по сайту') {
+
+  $form['text'] = array(
+    '#type' => 'textfield',
+    '#default_value' => '',
+    '#size' => 40,
+    '#maxlength' => 255,
+    '#required' => TRUE,
+    '#attributes' => array(
+      'placeholder' => $input_text
+     ),
+  );
+  /*$form['text'] = array(
+    '#type' => 'textarea',
+    '#default_value' => '',
+    '#cols' => 40,
+    '#rows' => 1,
+    // '#maxlength' => 255,
+    // '#required' => TRUE,
+    '#resizable' => FALSE,
+    '#attributes' => array(
+      'placeholder' => 'Поиск по сайту',
+      'wrap' => "off",
+     ),
+  );*/
+
+  //$form['#attributes']['class'][] = 'hidden-form';
+  $form['actions'] = array(
+    '#type' => 'actions',
+    // '#prefix' => '<span class="search-icon-button">Поиск</span>',
+  );
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+  );
+  // $form['actions']['#suffix'] = '<span class="search-mobile-close"></span>';
+
+  // $form['#suffix'] = '<span class="search-mobile-toggle"></span>';
+
+  return $form;
+}
+
+/**
+ *
+ */
+function skb4_helper_search_form_validate($form, &$form_state) {
+  // if (strlen($form_state['values']['text']) < 2) {
+  //   form_set_error('text', 'Для поиска необходимо ввести хотя бы 3 буквы.');
+  // }
+}
+
+/**
+ *
+ */
+function skb4_helper_search_form_submit($form, &$form_state) {
+  if (!form_get_errors()) {
+    $status = drupal_get_http_header("status");
+    if ($status == '404 Not Found') {
+      $_GET['q'] = 'search';
+      $_GET['destination'] = 'search?search_phrase='.$form_state['values']['text'];
+    }
+    drupal_goto('/search', array('query' => array('search_phrase' => $form_state['values']['text'])));
+  }
+}
+
+function sortNodes($a,$b) {
+  return strnatcmp($a->title,$b->title);
+}
+
+/**
+ *
+ */
+function skb4_helper_providers_page() {
+
+  $args = arg();
+  // dsm($args);
+  if (count($args) == 2 && !is_numeric($args[1])) {
+    header("HTTP/1.0 404 Not Found");
+    exit(); 
+  }
+
+  $desc = variable_get('skb4_helper_manufactures_desc', '');
+  if ($desc != '') {
+    $meta_description = array(
+      '#type' => 'html_tag',
+      '#tag' => 'meta',
+      '#attributes' => array(
+        'name' => 'description',
+        'content' => $desc,
+      )
+    );
+    drupal_add_html_head($meta_description, 'meta_description');
+  }
+  
+  $content = "";
+
+  // чистим фильтр
+//  $q = drupal_get_query_parameters();
+//  if (!empty($q['filter']) && $q['filter'] == 'clean') {
+//  	$_SESSION['skb4_provider_filter'] = array();
+//  }
+
+  $session = isset($_SESSION['skb4_provider_filter']) ? $_SESSION['skb4_provider_filter'] : array();
+  $show_all_providers_link = TRUE;
+
+  if (!empty($session['category']) && is_numeric($session['category']) && $session['category'] > 0) {
+  	
+  	$term = taxonomy_term_load($session['category']);
+  	$breadcrumb = array();
+  	$breadcrumb[] = l(t('Home'), '<front>');
+    $breadcrumb[] = l('Поставщики', 'manufactures', array('query' => array('filter' => 'clean')));
+    $breadcrumb[] = $term->name;
+    $breadcrumb['hide_page_title'] = TRUE;
+    drupal_set_breadcrumb($breadcrumb);
+
+    //$session['category'] = $term->tid;
+    //$show_all_providers_link = FALSE;
+
+    // $terms = taxonomy_get_tree(1,$tid);
+    // $tids = array(); $category = taxonomy_term_load($tid);
+    // foreach($terms as $t) {
+    //   $tids[] = $t->tid;
+    // }
+    /*$query = db_select('node', 'n')->fields('n', array('nid'))->condition('n.type', 'brand');
+    $query->leftJoin('field_data_field_brand_category', 'fc', " fc.bundle = 'brand' AND fc.entity_id = n.nid ");
+    $query->condition('fc.field_brand_category_tid', $tids, 'IN');
+    $query->orderBy('n.title', 'ASC');
+    if (!empty($_SESSION['skb4_provider_filter']['search']) && $_SESSION['skb4_provider_filter']['search'] != '') {
+    	$query->condition('n.title', '%'.db_like($_SESSION['skb4_provider_filter']['search']).'%', 'LIKE');
+    }
+    $nids = $query->execute()->fetchCol();
+
+    $content .= '<div class="brand-category"><h2>'.$category->name.'</h2><div class="category-content">';
+    $nodes = node_load_multiple($nids);
+    $views = node_view_multiple($nodes, 'teaser');
+    $content .= render($views).'</div></div>';*/
+
+    // если перешли по ссылке - все поставщики в категории, то фильтр сбрасываем
+  	//$_SESSION['skb4_provider_filter']['category'] = $tid;
+  	//$_SESSION['skb4_provider_filter']['only_one_category'] = $tid;
+
+  } //else {
+
+  // показ одной категории отключаем здесь
+  // if (!empty($_SESSION['skb4_provider_filter']['only_one_category']))
+  // 	unset($_SESSION['skb4_provider_filter']['only_one_category']);
+
+  $query = db_select('node', 'n')/*->fields('n', array('nid'))*/->condition('n.type', 'brand')
+            ->condition('n.status', 1);
+  $query->leftJoin('field_data_field_brand_category', 'fc', " fc.bundle = 'brand' AND fc.entity_id = n.nid ");
+  $query->addField('fc', 'field_brand_category_tid', 'cat_tid');
+  $query->groupBy('cat_tid');
+  $query->addExpression('GROUP_CONCAT(n.nid)', 'nids');
+
+  if (!empty($session['category'])) {
+    // формируем список подкатегорий
+    $query_tids = array($session['category']); //dsm($session);
+    //foreach ($session['category'] as $cat) {
+      $ts = taxonomy_get_tree(1, $session['category']);
+      foreach ($ts as $t) {
+        $query_tids[] = $t->tid;
+      }
+    //}
+    // dsm($query_tids);
+    $query->condition('fc.field_brand_category_tid', $query_tids, 'IN');
+  }
+
+  if (!empty($session['search']) && $session['search'] != '') {
+    $query->condition('n.title', '%'.db_like($session['search']).'%', 'LIKE');
+    $show_all_providers_link = FALSE;
+  }
+  //dsm($session);
+  if (empty($session['search']) /*&& empty($session['category'])*/) {
+    $query->leftJoin('field_data_field_brand_general', 'bg', " bg.bundle = 'brand' AND bg.entity_id = n.nid ");
+    $query->condition('bg.field_brand_general_value', 1);
+  }
+  //$query->orderBy('n.title', "ASC");
+
+  $rows = $query->execute()->fetchAllKeyed();
+
+  $parent_cats = taxonomy_get_tree(1,0,1);
+  $cats = array(); $terms_parents = array();
+  foreach ($parent_cats as $t) {
+    $terms = taxonomy_get_tree(1, $t->tid);
+    $cats[$t->tid] = array('tids' => array($t->tid), 'title' => $t->name, 'brands' => array());
+    $terms_parents[$t->tid] = $t->tid;
+    foreach($terms as $t2) {
+      $terms_parents[$t2->tid] = $t->tid;
+      $cats[$t->tid]['tids'][] = $t2->tid;
+    }
+    // всего брендов в категории
+    $query = db_select('node', 'n')->fields('n', array('nid'))->condition('n.type', 'brand')->condition('n.status', 1);
+    $query->leftJoin('field_data_field_brand_category', 'fc', " fc.bundle = 'brand' AND fc.entity_id = n.nid ");
+    $query->condition('fc.field_brand_category_tid',  $cats[$t->tid]['tids'], 'IN');
+    $query->groupBy('fc.entity_id');
+    // $query->addExpression('COUNT(n.nid)', 'c');
+    $items = $query->execute()->fetchCol();
+    $cats[$t->tid]['total_brands'] = count($items);
+  }
+
+  foreach ($rows as $tid => $nids) {
+    if ($nids != '') {
+      $n = explode(',',$nids);
+      foreach($n as $nid) {
+        //if (!empty($cats[$terms_parents[$tid]]))
+          // $cats[$terms_parents[$tid]]['brands'] = array();
+        if (!empty($terms_parents[$tid]) && !empty($cats[$terms_parents[$tid]]) && !in_array($nid, $cats[$terms_parents[$tid]]['brands'])) {
+          $cats[$terms_parents[$tid]]['brands'][] = $nid;
+        }
+      }
+    }
+  }
+
+  foreach ($cats as $tid => $category) {
+    if ($category['brands']) {
+      $content .= '<div class="brand-category"><h2>'.$category['title'].'</h2>' .
+      ($show_all_providers_link && $category['total_brands'] != count($category['brands']) ? l('Все поставщики ('.$category['total_brands'].')', 'get-all-brand-from-category/'.$tid,
+        array('rel' => 'nofollow', 'attributes' => ['class' => ['use-ajax']])): '')
+      .'<div class="category-content">';
+      $nodes = node_load_multiple($category['brands']);
+      uasort($nodes, 'sortNodes');
+      $views = node_view_multiple($nodes, 'teaser');
+      $content .= render($views).'</div></div>';
+    }
+  }
+  //}
+
+  $form = drupal_get_form('skb4_helper_provider_filter_form');
+  $content = render($form) . '<div id="brands-wrapper">'.$content.'</div>';
+
+  return $content;
+}
+
+/**
+ *
+ */
+function _load_all_brends_from_category($tid) {
+
+  if (!$tid) {
+    return;
+  }
+
+  $query = db_select('node', 'n')->fields('n', array('nid'))->condition('n.type', 'brand')
+    ->condition('n.status', 1);
+  $query->leftJoin('field_data_field_brand_category', 'fc', " fc.bundle = 'brand' AND fc.entity_id = n.nid ");
+
+  // формируем список подкатегорий
+  $category = taxonomy_term_load($tid);
+  $query_tids = array($tid);
+  $ts = taxonomy_get_tree(1, $tid);
+  foreach ($ts as $t) {
+    $query_tids[] = $t->tid;
+  }
+  $query->condition('fc.field_brand_category_tid', $query_tids, 'IN');
+  $nids = $query->execute()->fetchCol();
+
+  if ($nids) {
+//    $nodes = node_load_multiple($nids);
+//    $nodes_views = node_view_multiple($nodes);
+//    $commands[] = ajax_command_append_to("#category-products-block-content", render($nodes_views));
+
+    $content = '<div class="brand-category"><h2>'.$category->name.'</h2>'
+      .'<div class="category-content">';
+    $nodes = node_load_multiple($nids);
+    uasort($nodes, 'sortNodes');
+    $views = node_view_multiple($nodes, 'teaser');
+    $content .= render($views).'</div></div>';
+
+  }
+  $commands[] = ajax_command_html('#brands-wrapper', $content);
+  //$commands[] = ajax_command_invoke('.category-products-wrapper .more', 'attr', array('href', '/skb4-helper/category-products/'.$tid.'/'.($page+1)));
+
+  return array(
+    '#type' => 'ajax',
+    '#commands' => $commands,
+  );
+}
+
+/**
+ * Helper for mymodule_taxonomy_tree()
+ */
+/*function _skb4_helper_taxonomy_tree($terms, $parent = 0, $level = 0) {
+  $items = array();
+ 
+  foreach ($terms as $term) {
+    if (in_array($parent, $term->parents)) {
+      $items[] = array(
+        'data' => $term->name,
+        'children' => _mymodule_taxonomy_tree($terms, $term->tid),
+      );
+    }
+  }
+ 
+  return $items;
+}*/
+
+/**
+ * form for goto taxonomy term pages
+ */
+function skb4_helper_provider_filter_form($form, &$form_state) {
+
+  ctools_add_js('auto-submit');
+
+  $session = isset($_SESSION['skb4_provider_filter']) ? $_SESSION['skb4_provider_filter'] : array();
+
+  $form['search'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+      'placeholder' => 'Поиск',
+      'class' => array('ctools-auto-submit'),
+    ),
+  );
+
+  if (!empty($session['search'])) {
+  	$form['search']['#default_value'] = $session['search'];
+  }
+
+  $tree = taxonomy_get_tree(1, 0, 1);
+  //dsm($tree);
+  $options = array(0 => 'Все категории');
+  foreach ($tree as $term) {
+    $prefix = '';
+    /*for($i = 0; $i < $term->depth; $i++) {
+      $prefix .= "-";
+    }*/
+    $options[$term->tid] = $prefix . $term->name;
+  }
+
+  $form['category'] = array(
+    '#type' => 'select',
+    '#title' => 'Показывать:',
+    //'#multiple' => TRUE,
+    '#options' => $options,
+    '#attributes' => array(
+      'data-placeholder' => "Все категории",
+      'class' => array('ctools-auto-submit'),
+    ),
+   );
+
+  /*if (!empty($session['only_one_category'])) {
+  	$form['category']['#multiple'] = FALSE;
+  }*/
+
+  if (!empty($session['category'])) {
+  	$form['category']['#default_value'] = $session['category'];
+  }
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+    '#attributes' => array(
+    	'class' => array('ctools-auto-submit-click', 'js-hide')
+    ),
+  );
+
+  //$form['']
+
+  return $form;
+}
+
+/**
+ *
+ */
+function skb4_helper_provider_filter_form_submit($form, $form_state) {
+
+	//$only_one_category = FALSE; 
+	//dsm($_SESSION['skb4_provider_filter']); dsm($form_state['values']);
+	// if (!empty($_SESSION['skb4_provider_filter']['only_one_category']))
+	// 	$only_one_category = $_SESSION['skb4_provider_filter']['only_one_category'];
+
+	$_SESSION['skb4_provider_filter'] = array();
+
+	if ($form_state['values']['search'] != '') {
+		$_SESSION['skb4_provider_filter']['search'] = $form_state['values']['search'];
+	}
+	if ($form_state['values']['category']) {
+		$_SESSION['skb4_provider_filter']['category'] = $form_state['values']['category'];
+
+//		$form_state['redirect'] = 'manufactures/'.$form_state['values']['category'];
+//		drupal_goto('manufactures/'.$form_state['values']['category']);
+	} /*else {
+		if (!empty(arg(1)) && is_numeric(arg(1)) && !$form_state['values']['category']) {
+			drupal_goto('manufactures');
+		}
+	}*/
+
+	// if ($only_one_category && is_numeric($only_one_category)) {
+	// 	$form_state['redirect'] = 'manufactures/'.$only_one_category;
+	// }
+  
+  return;
+}
+
+/**
+ *
+ */
+function skb4_helper_views_post_execute(&$view) {
+  // если вьюха  галереей новосстей пустая, то и блок нам такой не нужен
+  if ($view->name == 'news_gallery' && (empty($view->result[0]->field_field_news_gallery) || count($view->result[0]->field_field_news_gallery) == 0)) {
+    $view->result = array();
+  }
+}
+
+/**
+ *
+ */
+function skb4_helper_get_brand_products_callback($tid, $page = 1, $mode = NULL) {
+	// Если у посетителя отключён javascript, то показываем ему сообщение
+  if ($mode != 'ajax') {
+    drupal_set_message('Enable Javascript');
+    drupal_goto(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '<front>');
+  }
+
+  if (empty($tid))
+  	return;
+
+  $offset = $page * 8;
+  $query = db_select('taxonomy_index', 't')->fields('t', array('nid'))->orderBy('t.created', 'DESC');
+	$query->condition('t.tid', $tid);
+	$query->join('node', 'n', " n.nid = t.nid AND n.type = 'product' ");
+	$query->range($offset, 8);
+	$nids = $query->execute()->fetchCol();
+	$product_more = count($nids) > 8 ? TRUE : FALSE ;
+	$nids = array_slice($nids, 0, 8);
+	$commands = [];
+	if ($nids) {	
+		$nodes = node_load_multiple($nids);
+		$nodes_views = node_view_multiple($nodes);
+		$commands[] = ajax_command_append_to("#category-products-block-content", render($nodes_views));
+	}
+	if ($product_more === FALSE) {
+		$commands[] = ajax_command_remove('.category-products-wrapper .more');
+	}	else {
+		$commands[] = ajax_command_invoke('.category-products-wrapper .more', 'attr', array('href', '/skb4-helper/category-products/'.$tid.'/'.($page+1)));
+	}	
+  
+  return array(
+    '#type' => 'ajax',
+    '#commands' => $commands,
+  );
+}
+
+/**
+ *
+ */
+function ajax_command_append_to($selector, $html, $settings = NULL) {
+  return array(
+    'command' => 'append_to',
+    'method' => NULL,
+    'selector' => $selector,
+    'data' => $html,
+    'settings' => $settings,
+  );
+}
+
+/**
+ *
+ */
+function skb4_helper_settings($form, &$foirm_state) {
+
+  $form['skb4_helper_catalog_desc'] = [
+    '#type' => 'textarea',
+    '#title' => 'Мета-тег description для страницы каталога',
+    '#default_value' => variable_get('skb4_helper_catalog_desc', ''),
+  ];
+
+  $form['skb4_helper_manufactures_desc'] = [
+    '#type' => 'textarea',
+    '#title' => 'Мета-тег description для страницы поставщиков',
+    '#default_value' => variable_get('skb4_helper_manufactures_desc', ''),
+  ];
+
+  return system_settings_form($form);
+}
+
+/**
+ *
+ */
+function skb4_helper_get_manufactures_category_callback($category, $page = 1, $mode = NULL) {
+  // Если у посетителя отключён javascript, то показываем ему сообщение
+  if ($mode != 'ajax') {
+    drupal_set_message('Enable Javascript');
+    drupal_goto(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '<front>');
+  }
+
+  if (empty($tid))
+    return;
+
+  $offset = $page * 8;
+  $query = db_select('taxonomy_index', 't')->fields('t', array('nid'))->orderBy('t.created', 'DESC');
+  $query->condition('t.tid', $tid);
+  $query->join('node', 'n', " n.nid = t.nid AND n.type = 'product' ");
+  $query->range($offset, 8);
+  $nids = $query->execute()->fetchCol();
+  $product_more = count($nids) > 8 ? TRUE : FALSE ;
+  $nids = array_slice($nids, 0, 8);
+  $commands = [];
+  if ($nids) {
+    $nodes = node_load_multiple($nids);
+    $nodes_views = node_view_multiple($nodes);
+    $commands[] = ajax_command_append_to("#category-products-block-content", render($nodes_views));
+  }
+  if ($product_more === FALSE) {
+    $commands[] = ajax_command_remove('.category-products-wrapper .more');
+  }	else {
+    $commands[] = ajax_command_invoke('.category-products-wrapper .more', 'attr', array('href', '/skb4-helper/category-products/'.$tid.'/'.($page+1)));
+  }
+
+  return array(
+    '#type' => 'ajax',
+    '#commands' => $commands,
+  );
+
+}

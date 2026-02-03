@@ -1,0 +1,12 @@
+name = reCAPTCHA v3
+description = reCAPTCHA v3 returns a score for each request without user friction. The score is based on interactions with your site and enables you to take an appropriate action for your site.
+core = 7.x
+package = Spam control
+dependencies[] = recaptcha
+configure = admin/config/people/captcha/recaptcha-v3
+php = 5.3.2
+; Information added by Drupal.org packaging script on 2020-11-03
+version = "7.x-1.0-alpha5"
+core = "7.x"
+project = "recaptcha_v3"
+datestamp = "1604402980"

@@ -1,0 +1,5 @@
+name = Skb-4 helper
+description = Special blocks and some addons
+
+core = 7.x
+version = 7.x-1.0

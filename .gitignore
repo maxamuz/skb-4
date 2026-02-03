@@ -1,0 +1,19 @@
+# Ignore configuration files that may contain sensitive information.
+sites/*/settings*.php
+
+# Ignore paths that contain user-generated content.
+sites/*/files
+sites/*/private
+presentation
+tmp
+.osp
+*.gz
+.bash_history
+.cache/
+.config/
+.local/
+.drush/
+.fontconfig/
+.java/
+.ssh/
+.idea

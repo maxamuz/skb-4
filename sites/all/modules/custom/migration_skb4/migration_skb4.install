@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function migration_skb4_schema() {
+  
+  $schema['migration_skb4'] = array(
+    'description' => 'Mapping content',
+    'fields' => array(
+      'id' => array(
+        'description' => 'ID',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      'type' => array(
+        'description' => 'content type',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE),
+      'nid' => array(
+        'description' => 'node ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      'skb4_id' => array(
+        'description' => 'news ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE),      
+    	'status' => array(
+        'description' => 'status',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0),    	
+    	'added' => array(
+        'description' => 'added date',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0),
+    	),    
+    'unique keys' => array(
+      'type_nid_skb4_id' => array('type', 'nid', 'skb4_id'),
+      ),    
+    'primary key' => array('id'),
+  );
+  return $schema;
+}

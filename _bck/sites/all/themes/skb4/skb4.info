@@ -1,0 +1,26 @@
+name = Skb4
+description = Theme for skb-4.ru site
+
+core = 7.x
+
+regions[slider]  = 'Slider'
+regions[catalog_menu] = 'Catalog menu'
+regions[content] = 'Content'
+regions[content_top] = 'Top content'
+regions[content_bottom] = 'Bottom content'
+regions[footer_top] = 'Top footer'
+regions[footer]  = 'Footer'
+regions[footer_bottom]  = 'Footer bottom'
+regions[search] = 'Search'
+regions[mobile_search] = 'mobile search'
+
+
+scripts[] = 'js/jquery.mCustomScrollbar.min.js'
+;scripts[] = 'js/jquery.jcarousel.min.js'
+scripts[] = 'js/skb4.js'
+scripts[] = 'js/masonry.pkgd.min.js'
+scripts[] = 'js/sticky-header.min.js'
+;scripts[] = 'js/hammer.min.js'
+;scripts[] = 'js/jquery.hammer.js'
+
+stylesheets[all][] = less/style.less

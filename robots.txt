@@ -1,0 +1,81 @@
+#
+# robots.txt
+#
+# This file is to prevent the crawling and indexing of certain parts
+# of your site by web crawlers and spiders run by sites like Yahoo!
+# and Google. By telling these "robots" where not to go on your site,
+# you save bandwidth and server resources.
+#
+# This file will be ignored unless it is at the root of your host:
+# Used:    http://example.com/robots.txt
+# Ignored: http://example.com/site/robots.txt
+#
+# For more information about the robots.txt standard, see:
+# http://www.robotstxt.org/robotstxt.html
+User-agent: *
+
+Disallow: */Page*
+Disallow: /*page*
+Disallow: /*Table*
+Disallow: /*dibatag_jp=
+Disallow: /*keyword=
+Disallow: /*manufacturer/results
+Disallow: /*tmpl=component
+Disallow: /*search*
+Disallow: /*source/$
+Disallow: /*?search_phrase
+Disallow: /*?lang=ru
+Disallow: /*results*
+Disallow: /user
+Disallow: /*order/*
+Disallow: /*ordering
+Disallow: /*content/$
+Disallow: /*manufacturers/$
+Disallow: /*option
+Disallow: /admin/
+Disallow: /comment/reply/
+Disallow: /filter/tips/
+Disallow: /node/add/
+Disallow: /includes/
+Disallow: /*misc/$
+Disallow: /*modules/$
+Disallow: /*sites/$
+Disallow: /*contrib/$
+Disallow: /profiles/
+Disallow: /*files/$
+Disallow: /*default/$
+Disallow: /*welte&Itemid=
+Disallow: /*id=
+Disallow: /scripts/
+Disallow: /*themes/$
+Disallow: /*feed
+Disallow: /*styles
+Disallow: /agreement
+Disallow: /*filter=clean
+Disallow: /*broaching_tools
+Disallow: /CHANGELOG.txt
+Disallow: /cron.php
+Disallow: /INSTALL.mysql.txt
+Disallow: /INSTALL.pgsql.txt
+Disallow: /INSTALL.sqlite.txt
+Disallow: /install.php
+Disallow: /INSTALL.txt
+Disallow: /LICENSE.txt
+Disallow: /MAINTAINERS.txt
+Disallow: /update.php
+Disallow: /UPGRADE.txt
+Disallow: /?
+Disallow: /*?*
+
+Allow: /*.css
+Allow: /*js
+Allow: /*.gif
+Allow: /*.jpg
+Allow: /*.png
+Allow: /*.svg
+
+Crawl-delay: 10
+Clean-param: format&catid&tmpl&limitstart
+Clean-param: com_docman&view
+
+Sitemap: https://www.skb-4.com/sitemap.xml

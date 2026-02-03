@@ -1,0 +1,1051 @@
+[17-Nov-2020 11:02:34 Europe/Moscow] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 244866135 bytes) in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[17-Nov-2020 11:02:35 Europe/Moscow] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 93003776 bytes) in /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc on line 3807
+[17-Nov-2020 11:02:35 Europe/Moscow] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 46559232 bytes) in Unknown on line 0
+[17-Nov-2020 11:02:35 Europe/Moscow] PHP Notice:  Undefined offset: 0 in /home/m/murzakov/skb-4.com/public_html/includes/errors.inc on line 280
+[17-Nov-2020 11:02:35 Europe/Moscow] PHP Notice:  Undefined index: file in /home/m/murzakov/skb-4.com/public_html/includes/errors.inc on line 72
+[17-Nov-2020 11:02:35 Europe/Moscow] PHP Notice:  Undefined index: line in /home/m/murzakov/skb-4.com/public_html/includes/errors.inc on line 73
+[23-Mar-2021 11:21:03 Europe/Moscow] PHP Warning:  Unterminated comment starting line 783 in /home/m/murzakov/skb-4.com/public_html/sites/all/themes/skb4/template.php on line 783
+[16-Jul-2021 19:14:55 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[16-Jul-2021 19:19:47 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[16-Jul-2021 19:24:31 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[17-Jul-2021 19:43:33 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[17-Jul-2021 19:48:23 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[18-Jul-2021 20:00:14 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[18-Jul-2021 20:04:47 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[18-Jul-2021 20:08:49 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[20-May-2022 03:58:40 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[13-Jul-2022 05:01:34 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[20-Jul-2022 06:17:03 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[22-Jul-2022 06:55:06 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[23-Jul-2022 07:18:04 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[23-Jul-2022 07:23:24 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[01-Aug-2022 09:13:55 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[02-Aug-2022 09:51:14 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[07-Aug-2022 10:47:34 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[10-Aug-2022 11:14:11 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[16-Aug-2022 12:07:12 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[17-Aug-2022 12:19:39 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[22-Aug-2022 16:00:49 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[28-Aug-2022 13:37:46 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[25-Dec-2022 01:10:39 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[25-Dec-2022 04:16:02 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[25-Dec-2022 04:21:12 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[25-Dec-2022 04:25:39 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[25-Dec-2022 04:30:05 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[26-Dec-2022 01:37:52 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[26-Dec-2022 01:42:17 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[26-Dec-2022 01:47:40 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[26-Dec-2022 04:52:37 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[26-Dec-2022 04:56:46 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[26-Dec-2022 05:01:39 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[26-Dec-2022 05:05:56 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[26-Dec-2022 05:10:40 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[28-Dec-2022 02:25:30 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[28-Dec-2022 02:30:38 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[28-Dec-2022 02:35:15 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[28-Dec-2022 05:39:24 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[28-Dec-2022 05:43:54 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[28-Dec-2022 05:48:11 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[28-Dec-2022 05:52:20 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[29-Dec-2022 03:00:17 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[29-Dec-2022 03:04:24 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[29-Dec-2022 06:10:40 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[29-Dec-2022 06:15:26 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[29-Dec-2022 06:20:05 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[29-Dec-2022 06:24:34 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[29-Dec-2022 06:29:52 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[29-Dec-2022 06:34:05 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[31-Dec-2022 06:57:48 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[31-Dec-2022 07:01:48 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[31-Dec-2022 07:06:23 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[31-Dec-2022 07:10:33 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[01-Jan-2023 04:22:20 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[01-Jan-2023 04:26:24 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[01-Jan-2023 04:30:24 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[01-Jan-2023 04:34:27 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[01-Jan-2023 04:38:56 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[01-Jan-2023 07:45:50 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[01-Jan-2023 07:49:51 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[01-Jan-2023 07:54:07 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[01-Jan-2023 07:58:18 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[01-Jan-2023 08:03:13 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[04-Jan-2023 05:27:30 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[07-Jan-2023 05:47:10 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[07-Jan-2023 08:51:24 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[07-Jan-2023 08:55:30 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[07-Jan-2023 08:59:45 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[07-Jan-2023 09:04:15 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[08-Jan-2023 06:14:57 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[10-Jan-2023 06:27:03 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[10-Jan-2023 06:31:23 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[10-Jan-2023 06:35:41 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[10-Jan-2023 06:39:42 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[10-Jan-2023 09:44:37 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[10-Jan-2023 09:49:25 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[10-Jan-2023 09:55:50 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[10-Jan-2023 09:59:55 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[11-Jan-2023 07:11:06 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[11-Jan-2023 07:15:10 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[11-Jan-2023 10:20:11 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[11-Jan-2023 10:28:02 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[11-Jan-2023 10:32:03 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[11-Jan-2023 10:36:30 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[11-Jan-2023 10:40:30 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227
+[11-Jan-2023 10:44:42 Europe/Moscow] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc:2227
+Stack trace:
+#0 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2227): PDOStatement->execute(Array)
+#1 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(697): DatabaseStatementBase->execute(Array, Array)
+#2 /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc(2406): DatabaseConnection->query('SELECT expire, ...', Array, Array)
+#3 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(167): db_query('SELECT expire, ...', Array)
+#4 /home/m/murzakov/skb-4.com/public_html/includes/lock.inc(146): lock_may_be_available('theme_registry:...')
+#5 /home/m/murzakov/skb-4.com/public_html/includes/theme.inc(449): lock_acquire('theme_registry:...')
+#6 /home/m/murzakov/skb-4.com/public_html/includes/bootstrap.inc(460): ThemeRegistry->set(Array)
+#7 [internal function]: DrupalCacheArray->__destruct()
+#8 {main}
+  thrown in /home/m/murzakov/skb-4.com/public_html/includes/database/database.inc on line 2227

@@ -1,0 +1,1723 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function migration_skb4_menu() {
+  
+  $items['admin/config/development/migrate_skb4'] = array(
+    'title' => 'Migrate skb4.ru content',
+    'description' => 'Manage migration procces of all old content to this site',
+    'page callback' => 'migration_skb4_info_page',    
+    'access arguments' => array('administer migration skb4'),    
+  );
+
+  $items['admin/config/development/migrate_skb4/info'] = array(
+    'title' => 'Information',    
+    'access arguments' => array('administer migration skb4'),    
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  $items['admin/config/development/migrate_skb4/settings'] = array(
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('migration_skb4_settings'),
+    'access arguments' => array('administer migration skb4'),
+    'type' => MENU_LOCAL_TASK,    
+  );
+
+  $items['admin/config/development/migrate_skb4/migrate-news'] = array(
+  	'title' => 'Migrate news',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('migration_skb4_migrate_content', 'news'),
+    'access arguments' => array('administer migration skb4'),
+    'type' => MENU_LOCAL_ACTION,
+  );
+
+  $items['admin/config/development/migrate_skb4/migrate-categories'] = array(
+  	'title' => 'Migrate categories',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('migration_skb4_migrate_content', 'categories'),
+    'access arguments' => array('administer migration skb4'),
+    'type' => MENU_LOCAL_ACTION,
+  );
+
+  $items['admin/config/development/migrate_skb4/migrate-brand'] = array(
+  	'title' => 'Migrate brands',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('migration_skb4_migrate_content', 'brand'),
+    'access arguments' => array('administer migration skb4'),
+    'type' => MENU_LOCAL_ACTION,
+  );
+
+  $items['admin/config/development/migrate_skb4/migrate-product'] = array(
+  	'title' => 'Migrate product',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('migration_skb4_migrate_content', 'product'),
+    'access arguments' => array('administer migration skb4'),
+    'type' => MENU_LOCAL_ACTION,
+  );
+
+  $items['admin/config/development/migrate_skb4/migrate-document'] = array(
+  	'title' => 'Migrate document',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('migration_skb4_migrate_content', 'document'),
+    'access arguments' => array('administer migration skb4'),
+    'type' => MENU_LOCAL_ACTION,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function migration_skb4_permission() {
+  return array(    
+    'administer migration skb4' =>  array(
+      'title' => t('administer migration skb4'),
+    ),
+  );
+}
+
+/**
+ * Статистика
+ */
+function migration_skb4_info_page() {
+
+	$output = '<h2>Статистика миграции данных</h2>';
+
+	$query = db_select('migration_skb4', 'm')->fields('m', array('type'));
+	$query->groupBy('m.type');
+	$query->addExpression('COUNT(m.id)', 'counts');
+	$query->orderBy('m.type', 'ASC');
+	$rows = $query->execute()->fetchAll();
+
+	$output .= "<pre>".print_r($rows, TRUE)."</pre>";
+
+	return $output;
+}
+
+/**
+ *
+ */
+function migration_skb4_settings($form, &$form_state) {
+
+	/*$xml = simplexml_load_file('http://skb4.loc/xml/1.html?view=xml');
+	
+	foreach ($xml->url as $url) {
+		// dsm($url->id.' '.$url->com.' '.$url->loc);
+		if (!empty($url->id) && !empty($url->com)) {
+			$exist = db_select('migration_skb4_urls', 'u')->fields('u', array('id'))->condition('u.jid', $url->id)
+										->execute()->fetchField();
+			if (!$exist) {
+				$link = strtolower(str_replace("http://skb4.loc/", "", $url->loc));
+				$link = str_replace(".html", "", $link);
+				db_insert('migration_skb4_urls')->fields(array(
+						'content_type' => $url->com,
+						'jid' => $url->id,
+						'url' => $link
+				))->execute();
+			}
+		}
+	}*/
+
+	$form['migration_skb4_data_source_name'] = array(
+		'#type' => 'textfield',
+		'#title' => 'DB source target name',
+		'#default_value' => variable_get('migration_skb4_data_source_name', 'data_source'),
+	);	
+
+	$users = db_select('users', 'u')->fields('u', array('uid', 'name'))->condition('u.uid', 0, '>')->execute()->fetchAllKeyed();
+
+	$form['migration_skb4_content_author'] = array(
+		'#type' => 'select',
+		'#title' => 'Content author',
+		'#options' => $users,
+		'#default_value' => variable_get('migration_skb4_content_author', 1),
+	);
+	
+	$filters = filter_formats();
+	$filter_options = array();
+	foreach($filters as $filter) {
+		$filter_options[$filter->format] = $filter->name;
+	}
+	$form['migration_skb4_content_filter'] = array(
+		'#type' => 'select',
+		'#title' => 'Content filter',
+		'#options' => $filter_options,
+		'#default_value' => variable_get('migration_skb4_content_filter', 'plain_text'),
+	);
+
+	$form['migration_skb4_prelease_image_folder'] = array(
+		'#type' => 'textfield',
+		'#title' => 'Путь к папке с картинками релизов',
+		'#default_value' => variable_get('migration_skb4_prelease_image_folder', ''),
+	);
+
+	return system_settings_form($form);
+}
+
+/**
+ *
+ */
+function migration_skb4_migrate_content($form, &$form_state, $content_type = 'news') {
+
+	$skb4_db_target = variable_get('migration_skb4_data_source_name', 'data_source');
+
+	$contents = $maps = array();
+	switch ($content_type) {
+		case 'news':
+			$contents = db_select('content', 'c', array('target' => $skb4_db_target))
+										->fields('c')->condition('c.catid', 9)->condition('c.state', 1)->execute()->fetchAll();
+			$maps = db_select('migration_skb4', 'c')->fields('c')
+								->condition('type', $content_type)->orderBy('skb4_id', 'DESC')->execute()->fetchAll();							
+			break;
+
+		case 'categories':
+			$query = db_select('virtuemart_categories', 'c', array('target' => $skb4_db_target))
+										->fields('c', array('virtuemart_category_id', 'category_parent_id'));
+
+			$contents =	$query->execute()->fetchAll();
+			$maps = db_select('migration_skb4', 'c')->fields('c')
+								->condition('type', $content_type)->orderBy('skb4_id', 'DESC')->execute()->fetchAll();							
+			break;
+
+		case 'brand':
+			$contents = db_select('virtuemart_manufacturers', 'b', array('target' => $skb4_db_target))
+										->fields('b')->condition('b.published', 1)->execute()->fetchAll();
+			$maps = db_select('migration_skb4', 'c')->fields('c')
+								->condition('type', $content_type)->orderBy('skb4_id', 'DESC')->execute()->fetchAll();							
+			break;	
+
+		case 'product':
+			$query = db_select('virtuemart_products', 'p', array('target' => $skb4_db_target))
+										->fields('p', array('virtuemart_product_id', 'created_on', 'product_sku'));
+			$query->condition('p.published', 1);
+			$contents = $query->execute()->fetchAll();
+
+			$maps = db_select('migration_skb4', 'c')->fields('c')
+								->condition('type', $content_type)->orderBy('skb4_id', 'DESC')->execute()->fetchAll();							
+			break;	
+
+		case 'document':
+			$query = db_select('docman_categories', 'd', array('target' => $skb4_db_target))
+										->fields('d', array('docman_category_id'));
+			$query->condition('d.enabled', 1);
+			$contents = $query->execute()->fetchAll();
+
+			$maps = db_select('migration_skb4', 'c')->fields('c')
+								->condition('type', $content_type)->orderBy('skb4_id', 'DESC')->execute()->fetchAll();							
+			break;	
+		
+	}
+
+	$form['content_type'] = array(
+		'#type' => 'value',
+		'#value' => $content_type,
+	);
+
+	$form['materials_count'] = array(
+		'#type' => 'item',
+		'#title' => 'Materials count',
+		'#markup' => count($contents),
+	);
+
+	$form['imported_count'] = array(
+		'#type' => 'item',
+		'#title' => 'Imported materials count',
+		'#markup' => count($maps),		
+	);
+
+	if ($contents && count($contents) > count($maps) ) {
+		$form['range'] = array(
+			'#title' => 'Material count for import',
+			'#type' => 'textfield',
+			'#default_value' => 1,
+			'#description' => 'If set 0 - all materials which not imported yet will be migrate.',
+			'#required' => TRUE,
+			'#size' => 2,
+		);	
+
+		$form['submit'] = array(
+			'#type' => 'submit',
+			'#value' => 'migrate',
+		);
+		$form['#submit'][] = 'migration_skb4_migrate_content_submit';	
+	} elseif (count($contents) == count($maps)) {
+		$form['mess'] = array(
+			'#markup' => '<h3>Нечего имопртировать!</h3>',
+		);
+	} else {
+		$form['mess'] = array(
+			'#markup' => '<h3>Миграция недоступна!</h3>',
+		);
+	} 	
+
+	return $form;
+}
+
+/**
+ *
+ */
+function migration_skb4_migrate_news_validate($form, &$form_state) {
+	if (!is_numeric($form_state['values']['range'])) {
+		form_set_error('range', 'Material count must be a numeric!');
+	}
+}
+
+/**
+ *
+ */
+function migration_skb4_migrate_content_submit($form, &$form_state) {
+
+	if (form_get_errors()) {
+		return;
+	}
+
+	$content_type = $form_state['values']['content_type'];
+	$skb4_db_target = variable_get('migration_skb4_data_source_name', 'data_source');
+	$filter_format = variable_get('migration_skb4_content_filter', 'plain_text');
+	$range = $form_state['values']['range'];
+	$author = variable_get('migration_skb4_content_author', 1);
+
+	$query = db_select('migration_skb4', 'm')						
+						->condition('m.type', $content_type);
+	$query->addExpression('MAX(skb4_id)', 'last_id');
+	$last_inserted_news_id = $query->execute()->fetchField();
+	if (!$last_inserted_news_id)
+		$last_inserted_news_id = 0;
+
+	$rows = $maps = $urls = $cats = $brands = array();
+
+	switch ($content_type) {
+		case 'categories':
+			$query = db_select('virtuemart_categories', 'c', array('target' => $skb4_db_target))
+										->fields('c', array('virtuemart_category_id', 'category_parent_id'));
+			$query->leftJoin('virtuemart_categories_ru_ru', 'r', " r.virtuemart_category_id = c.virtuemart_category_id ");
+			$query->addField('r', 'category_name', 'category_name');
+			$query->addField('r', 'category_description', 'category_description');
+			$query->leftJoin('virtuemart_category_medias', 'mc', " c.virtuemart_category_id = mc.virtuemart_category_id ");
+			$query->leftJoin('virtuemart_medias', 'm', " m.virtuemart_media_id = mc.virtuemart_media_id ");
+			$query->addField('m', 'file_url', 'image');
+			// $query->condition('c.virtuemart_category_id', 99);
+			$query->condition('c.virtuemart_category_id', $last_inserted_news_id, '>');
+			$query->orderBy('c.virtuemart_category_id', 'ASC');
+			if ($range) {		
+				$query->range(0,$range);
+			}	
+			$rows =	$query->execute()->fetchAll();	dsm($rows);
+
+			break;
+
+		case 'brand':
+			$query = db_select('virtuemart_manufacturers', 'b', array('target' => $skb4_db_target))
+										->fields('b', array('virtuemart_manufacturer_id', 'virtuemart_manufacturercategories_id', 'created_on'));
+			$query->leftJoin('virtuemart_manufacturers_ru_ru', 'r', " r.virtuemart_manufacturer_id = b.virtuemart_manufacturer_id ");
+			$query->addField('r', 'mf_name', 'title');
+			$query->addField('r', 'mf_desc', 'introtext');
+			$query->leftJoin('virtuemart_manufacturer_medias', 'mb', " b.virtuemart_manufacturer_id = mb.virtuemart_manufacturer_id ");
+			$query->leftJoin('virtuemart_medias', 'm', " m.virtuemart_media_id = mb.virtuemart_media_id ");
+			$query->addField('m', 'file_url', 'image');
+			$query->addExpression('UNIX_TIMESTAMP(b.created_on)', 'date_int');
+			$query->condition('b.published', 1)->condition('b.virtuemart_manufacturer_id', $last_inserted_news_id, '>');
+			$query->orderBy('b.virtuemart_manufacturer_id', 'ASC');
+			if ($range) {		
+				$query->range(0,$range);
+			}	
+			$rows =	$query->execute()->fetchAll();	 
+
+			break;	
+
+		case 'product':
+			$query = db_select('virtuemart_products', 'p', array('target' => $skb4_db_target))
+										->fields('p', array('virtuemart_product_id', 'product_sku'));
+			$query->leftJoin('virtuemart_products_ru_ru', 'r', " r.virtuemart_product_id = p.virtuemart_product_id ");
+			$query->addField('r', 'product_name', 'title');
+			$query->addField('r', 'product_desc', 'introtext');
+			$query->addField('r', 'product_s_desc', 'short_desc');
+			$query->leftJoin('virtuemart_product_categories', 'c', " c.virtuemart_product_id = p.virtuemart_product_id ");
+			$query->addField('c', 'virtuemart_category_id', 'cid');
+			$query->leftJoin('virtuemart_product_manufacturers', 'b', " b.virtuemart_product_id = p.virtuemart_product_id ");
+			$query->addField('b', 'virtuemart_manufacturer_id', 'brand_id');
+			$query->leftJoin('virtuemart_product_prices', 'pr', " pr.virtuemart_product_id = p.virtuemart_product_id ");
+			$query->addField('pr', 'product_price', 'price');
+			// $query->addExpression('UNIX_TIMESTAMP(b.created_on)', 'date_int');
+			$query->condition('p.published', 1)->condition('b.virtuemart_product_id', $last_inserted_news_id, '>');
+			$query->orderBy('p.virtuemart_product_id', 'ASC');
+			if ($range) {		
+				$query->range(0,$range);
+			}	
+			$rows =	$query->execute()->fetchAll();
+
+			$cats = db_select('migration_skb4', 'c')->fields('c', array('skb4_id', 'nid'))
+								->condition('type', 'categories')->orderBy('skb4_id', 'ASC')->execute()->fetchAllKeyed();
+
+			$brands = db_select('migration_skb4', 'c')->fields('c', array('skb4_id', 'nid'))
+								->condition('type', 'brand')->orderBy('skb4_id', 'ASC')->execute()->fetchAllKeyed();
+
+			break;
+
+		case 'document':
+			$query = db_select('docman_categories', 'd', array('target' => $skb4_db_target))
+										->fields('d', array('docman_category_id', 'image'));
+			$query->addField('d', 'title', 'title');
+			$query->addField('d', 'description', 'introtext');
+			$query->orderBy('d.docman_category_id', 'ASC');
+			$query->condition('d.docman_category_id', $last_inserted_news_id, '>');
+			if ($range) {		
+				$query->range(0,$range);
+			}	
+			$rows =	$query->execute()->fetchAll();
+
+			$cats = db_select('migration_skb4', 'c')->fields('c', array('skb4_id', 'nid'))
+								->condition('type', 'categories')->orderBy('skb4_id', 'ASC')->execute()->fetchAllKeyed();
+
+			$brands = db_select('migration_skb4', 'c')->fields('c', array('skb4_id', 'nid'))
+								->condition('type', 'brand')->orderBy('skb4_id', 'ASC')->execute()->fetchAllKeyed();
+
+			break;
+
+			// новости
+		default:
+			$query = db_select('content', 'c', array('target' => $skb4_db_target))
+								->fields('c')
+								->condition('c.catid', 9)->condition('c.state', 1)
+								->condition('c.id', $last_inserted_news_id, '>')
+								->orderBy('c.id', 'ASC');
+			$query->addExpression('UNIX_TIMESTAMP(c.created)', 'date_int');
+			if ($range) {		
+				$query->range(0,$range);
+			}	
+			$rows =	$query->execute()->fetchAll();	
+
+			// делаем массив с адресами
+			$urls = db_select('migration_skb4_urls', 'u')->fields('u', array('jid', 'url'))
+								->condition('content_type', 'article')->execute()->fetchAllKeyed();
+
+
+			break;
+	}
+
+	// термины
+	if ($content_type == 'categories') {
+
+		foreach ($rows as $cat) {
+			if ($cat->category_parent_id == 0) {
+				$desc = _copy_images_from_text($cat->category_description);
+				$desc = check_markup($desc, 'full_html');
+				$data = array(
+		      'name' => $cat->category_name,
+		      'vid' => 1,
+		      'parent' => 0,
+		      'description' => $desc,
+		      'format' => 'full_html',
+		    );
+		    $term = entity_create('taxonomy_term', $data);
+		    $wrapper = entity_metadata_wrapper('taxonomy_term', $term);
+				$wrapper->save();
+
+		    if ($cat->image) {
+					// надо скопировать фотки
+					$source = 'public://'.$cat->image;
+
+					$destination = "public://category_images/".basename($cat->image);
+					$file = file_save_data(file_get_contents($source), file_destination($destination, FILE_EXISTS_RENAME));
+					$wrapper->field_category_image->file->set($file);
+				}
+				$wrapper->save();
+
+		    $map_id = db_insert('migration_skb4')->fields(array(
+					'type' => $content_type,
+					'nid' => $term->tid,
+					'skb4_id' => $cat->virtuemart_category_id,
+					'added'	=> REQUEST_TIME,
+				))->execute();
+				if (!$map_id)	{
+					drupal_set_message('Error on insert map record form material <em>'.$cat->category_name.'</em> ['.$cat->virtuemart_category_id.', nid='.$nid.']' ,'error');	
+				} else {
+					$maps[] = $map_id;
+				}
+
+		    _skb4_add_category($rows, $cat->virtuemart_category_id, $term->tid, $maps);
+			}
+		}
+
+	} else { // ноды
+
+		foreach($rows AS $news) {
+
+			$node = entity_create('node', array('type' => $content_type));
+			$node->uid = $author;
+				
+			$node_wrapper = entity_metadata_wrapper('node', $node); //dsm($node_wrapper->getPropertyInfo());
+			if (!empty($news->created_on) || !empty($news->created))  {
+				$node_wrapper->created = $news->date_int; //strtotime($news->created);
+			}	
+			$node_wrapper->title = $news->title;
+			$node_wrapper->language = 'ru';
+			/*if (!empty($news->introtext)) {
+				$node_wrapper->body->summary = $news->introtext;
+			}*/
+			
+			// копирование картинок
+			$text = _copy_images_from_text($news->introtext);
+			$text = check_markup($text, $filter_format);
+			$node_wrapper->body->value = $text;
+			$node_wrapper->body->format = $filter_format;	
+
+			if (!empty($news->state)) {
+				$node_wrapper->status = $news->state;
+			}
+
+			// files
+			if ($content_type == 'brand' && $news->image) {
+				// надо скопировать фотки
+				$pic_folder = variable_get('migration_skb4_prelease_image_folder', '');
+				$source = 'public://'.$news->image;
+
+				$destination = "public://brend_logo/".basename($news->image);
+				$file = file_save_data(file_get_contents($source), file_destination($destination, FILE_EXISTS_RENAME));
+				$node_wrapper->field_brend_logo->file->set($file);
+			}
+
+			if ($content_type == 'product') {
+
+				$news->id = $news->virtuemart_product_id;
+				$node_wrapper->field_product_category = $cats[$news->cid];
+				$node_wrapper->field_product_brand = $brands[$news->brand_id];
+
+				$short_desc = check_markup($news->short_desc, $filter_format);
+				$node_wrapper->field_product_short_desc->value = $short_desc;
+				$node_wrapper->field_product_short_desc->format = $filter_format;
+
+				$node_wrapper->field_product_price = $news->price;
+				$node_wrapper->field_product_sku = $news->product_sku;
+
+				$query = db_select('virtuemart_product_medias', 'pm', array('target' => $skb4_db_target))
+									->condition('pm.virtuemart_product_id', $news->virtuemart_product_id);
+				$query->leftJoin('virtuemart_medias', 'm', " m.virtuemart_media_id = pm.virtuemart_media_id ");
+				$query->addField('m', 'file_url', 'image');
+				$images = $query->execute()->fetchCol();
+				// надо скопировать фотки
+				$fids = array();
+				foreach($images as $img) {
+					$source = 'public://'.$img;
+					$destination = "public://product_images/".basename($img);
+					$file = file_save_data(file_get_contents($source), file_destination($destination, FILE_EXISTS_RENAME));
+					if ($file) {
+						$node_wrapper->field_product_image[] = array('fid' => $file->fid);
+					}
+				}
+				/*if ($fids) {
+					$node_wrapper->field_product_image($fids);
+				}*/
+				
+			}
+
+			if ($content_type == 'document') {
+
+				$news->id = $news->docman_category_id;
+
+				if ($news->image) {
+					$source = 'public://import/joomlatools-files/docman-images/'.$news->image;
+					$destination = "public://document_images/".basename($news->image);
+					$file = file_save_data(file_get_contents($source), file_destination($destination, FILE_EXISTS_RENAME));
+					if ($file) {
+						$node_wrapper->field_document_image->set((array)$file);
+					}
+				}
+
+				$query = db_select('docman_documents', 'd', array('target' => $skb4_db_target))
+											->fields('d', array('title', 'description', 'storage_path', 'image'))
+											->condition('d.docman_category_id',  $news->docman_category_id);
+				$query->orderBy('d.docman_document_id', 'ASC');
+				$docs = $query->execute()->fetchAll();
+				$node_wrapper->save();
+
+				foreach($docs as $doc) {
+					$collection = entity_create('field_collection_item', array('field_name' => 'field_group_brand_docs'));
+			    $collection->setHostEntity('node', $node_wrapper->value());
+
+			    // Now define the collection parameters.
+			    $cwrapper = entity_metadata_wrapper('field_collection_item', $collection);
+			    $cwrapper->field_docs_title = $doc->title;
+			    
+			    $desc = _copy_images_from_text($doc->description);
+					$desc = check_markup($text, $filter_format);
+					$cwrapper->field_docs_desc->value = $desc;
+					$cwrapper->field_docs_desc->format = $filter_format;
+
+					if ($doc->image) {
+						$source = 'public://import/joomlatools-files/docman-images/'.$doc->image;
+						$destination = "public://document_files_images/".basename($doc->image);
+						$file = file_save_data(file_get_contents($source), file_destination($destination, FILE_EXISTS_RENAME));
+						if ($file) {
+							$cwrapper->field_docs_image->set((array)$file);
+						}
+					}
+
+					if ($doc->storage_path) {
+						$source = 'public://import/joomlatools-files/docman-files/'.$doc->storage_path;
+						$destination = "public://documents/".basename($doc->storage_path);
+						$file = file_save_data(file_get_contents($source), file_destination($destination, FILE_EXISTS_RENAME));
+						if ($file) { $file->display = 1;
+							$cwrapper->field_docs_file->set((array)$file);
+						}
+					}
+			    $cwrapper->save();  
+				}
+			}
+
+			if ($content_type == 'brand') {
+				$news->id = $news->virtuemart_manufacturer_id;
+				// $node_wrapper->pathauto->set(1);
+				$text = strip_tags($text);
+				$text = preg_replace("/ \./", "\. ", $text);
+				$text = html_entity_decode($text);
+				// $text = preg_replace("/&nbsp;/", "", $text);
+				$text = preg_replace("/ +/", " ", $text);
+				preg_match("/^(.+)\.[ \r]+/", $text, $match);
+				if ($match && !empty($match[0]) && $match[0] != '') {
+					$node_wrapper->field_brend_intro->value = $match[0];
+					$node_wrapper->field_brend_intro->format = $filter_format;
+				}
+				
+			}
+			
+			$node_wrapper->save();		
+
+			if ($nid = $node_wrapper->nid->value()) {
+
+				// metatags
+				$metatags = array(
+					LANGUAGE_NONE => array(
+						'title' => array(
+							'value' => $news->title,
+						),					
+					),
+				);
+				if (!empty($news->metakey)) {
+					$metatags[LANGUAGE_NONE]['keywords'] = array('value' => $news->metakey);
+				}
+				if (!empty($news->metadesc)) {
+					$metatags[LANGUAGE_NONE]['description'] = array('value' => $news->metadesc);
+				}			
+				$node = $node_wrapper->value(); 
+				$revisions = node_revision_list($node);  // 
+				metatag_metatags_save('node', $node->nid, current($revisions)->vid, $metatags, $content_type);
+				
+				// path
+				$path = array();
+				switch ($content_type) {
+					/*case 'brand':
+						$path = array(
+							'source' => 'node/'.$node->nid,
+							'alias' => 'manufacturers/'.$news->title,
+						);
+						break;*/
+
+					/*case 'analytics':
+						$path = array(
+							'source' => 'node/'.$node->nid,
+							'alias' => 'analytics/'.$news->id,
+						);
+						break;
+
+					case 'page':
+						$path = array(
+							'source' => 'node/'.$node->nid,
+							'alias' => $news->lk,
+						);
+						break;	*/
+					
+					case 'news':
+						if (!empty($urls[$news->id])) {
+							$path = array(
+								'source' => 'node/'.$node->nid,
+								'alias' => _copy_images_from_text($urls[$news->id]),
+							);			
+						}
+						break;
+				}
+				if ($path) {
+					pathauto_node_delete($node);
+					pathauto_entity_state_save('node', $node, FALSE);
+					path_save($path);
+				}
+				// сразу в менюшку
+				/*if ($content_type == 'page' && preg_match("/(^services|^inspect|^exhibitions|^special|^china)\//", $news->lk, $match)) {				
+					$item = array(
+					  'link_title' => $news->name,
+					  'link_path' => 'node/'.$node->nid,
+					  'menu_name' => 'menu-'.$match[1],
+					);
+					menu_link_save($item);
+				}*/
+
+				$map_id = db_insert('migration_skb4')->fields(array(
+					'type' => $content_type,
+					'nid' => $nid,
+					'skb4_id' => $news->id,
+					'added'	=> REQUEST_TIME,
+				))->execute();
+				if (!$map_id)	{
+					drupal_set_message('Error on insert map record form material <em>'.$news->name.'</em> ['.$news->id.', nid='.$nid.']' ,'error');	
+				} else {
+					$maps[] = $map_id;
+				}
+				
+			} else {
+				drupal_set_message('Error on save node - <em>'.$news->name.'</em> ['.$news->id.']' ,'error');
+			}	
+		}	
+	}
+	
+	$errors = drupal_get_messages('error');
+	if (!$errors) {
+		drupal_set_message(count($maps).' materials are migrated!');
+	}	
+
+	$form_state['redirect'] = 'admin/config/development/migrate_skb4';
+	return;
+}
+
+/**
+ *
+ */
+function _copy_images_from_text($text = '') {
+
+	if ($text == '')
+		return '';
+
+	$pattern = array(
+		"/src=\"\/images\//",
+		"/src=\"images\//",
+	);
+	$replacement = array(
+		"src=\"/sites/default/files/images/",
+		"src=\"/sites/default/files/images/",
+	);
+	
+	$text = preg_replace($pattern, $replacement, $text);
+
+	// правим ссылки в коде
+	$pattern = array(
+		"/\.html\"/",
+	);
+	$replacement = array(
+		'"',
+	);
+	$text = preg_replace($pattern, $replacement, $text);
+
+	// правим ссылки в коде
+	$pattern = array(
+		"/ href=\"([^\/]{1})/",
+	);
+	$replacement = array(
+		' href="/$1',
+	);
+	
+	$text = preg_replace($pattern, $replacement, $text);
+
+	return $text;
+}
+
+
+function _skb4_add_category($rows, $parent_id, $tid, &$maps) {
+	foreach ($rows as $cat) {
+		if ($cat->category_parent_id == $parent_id) {
+			$desc = _copy_images_from_text($cat->category_description);
+			$desc = check_markup($desc, 'full_html');
+			$data = array(
+	      'name' => $cat->category_name,
+	      'vid' => 1,
+	      'parent' => $tid,
+	      'description' => $desc,
+	      'format' => 'full_html',
+	    );
+	    $term = entity_create('taxonomy_term', $data);
+	    $wrapper = entity_metadata_wrapper('taxonomy_term', $term);
+	    $wrapper->save();
+
+	    $map_id = db_insert('migration_skb4')->fields(array(
+				'type' => 'categories',
+				'nid' => $term->tid,
+				'skb4_id' => $cat->virtuemart_category_id,
+				'added'	=> REQUEST_TIME,
+			))->execute();
+			if (!$map_id)	{
+				drupal_set_message('Error on insert map record form material <em>'.$cat->category_name.'</em> ['.$cat->virtuemart_category_id.', nid='.$nid.']' ,'error');	
+			} else {
+				$maps[] = $map_id;
+			}
+
+	    _skb4_add_category($rows, $cat->virtuemart_category_id, $term->tid, $maps);
+		}
+	}
+	return;
+} 
+
+
+/*
+$wr = entity_metadata_wrapper('node', 539);
+$text = _copy_images_from_text($wr->body->value->value());
+		$wr->body->value = $text;
+$wr->save();*/
+
+// $skb4_db_target = variable_get('migration_skb4_data_source_name', 'data_source');
+// $page_map = db_select('migration_skb4', 'm')->fields('m')->condition('m.type', 'page')->execute()->fetchAll();
+// dsm($page_map);
+// foreach($page_map as $pm) {
+//   //$node_wrapper = entity_metadata_wrapper('node', $pm->nid);
+//   $query = db_select('simpart', 's', array('target' => $skb4_db_target))->fields('s');
+//   $query->condition('s.id', $pm->skb4_id);
+//   $chi_page = $query->execute()->fetchObject();
+//   $nm = metatag_metatags_load('node', $pm->id); //dsm($nm);
+//   //dsm($pm->nid.': '.$nm[LANGUAGE_NONE]['title']['value'].'<br />'.$pm->skb4_id.': '.$chi_page->metatitle);
+//   $nm[LANGUAGE_NONE]['title']['value'] = $chi_page->metatitle;
+//   $revisions = node_revision_list(node_load($pm->nid));  // 
+//   metatag_metatags_save('node', $pm->nid, current($revisions)->vid, $nm, 'page');
+//   //break;
+// }
+
+/*$tree = taxonomy_get_tree(1);
+dsm($tree);
+foreach($tree as $t) {
+  taxonomy_term_delete($t->tid);
+}
+*/
+
+// $q = db_select('field_data_field_product_brand', 'b')->fields('b', array('field_product_brand_nid'))->condition('b.bundle', 'product');
+// $q->leftJoin('field_data_field_product_category', 'c', " c.bundle = 'product' AND c.entity_id = b.entity_id " );
+// $q->groupBy('b.field_product_brand_nid');
+// $q->addExpression('GROUP_CONCAT(DISTINCT c.field_product_category_tid)', 'cats');
+// $q->addExpression('COUNT(b.entity_id)', 'nids_count');
+// $rows = $q->execute()->fetchAll();
+// dsm($rows);
+// //return;
+// foreach($rows as $row) {
+//   $nw = entity_metadata_wrapper('node', $row->field_product_brand_nid);
+//   //$nw->field_brand_general->set(1);
+//   $cats = explode(',', $row->cats);
+//   //  $nw->field_brand_category = explode(',', $row->cats);
+//   foreach($cats as $cat) {
+//   $nw->field_brand_category[] = $cat;
+//   }
+//   $nw->save();
+// }
+
+/*
+у производителей меняем алиас на тот что в шаблоне
+$nids = db_select('node', 'n')->fields('n', array('nid'))->condition('n.type', 'brand')->condition('n.nid', 670, '>')->execute()->fetchCol();
+dsm($nids);
+foreach($nids as $nid) {
+$node = node_load($nid);
+$node->path['pathauto'] = 1;
+node_save($node);
+}
+
+
+
+*/
+
+/**
+проставить редиректы
+$path = array('alias' => 'manufacturers/fpz-spa', 'language' => 'ru', 'source' => 'node/671');
+if (!redirect_load_by_source($path['alias'], $path['language']) && drupal_valid_path($path['source'])) {
+    $redirect = new stdClass();
+    redirect_object_prepare($redirect);
+    $redirect->source = $path['alias'];
+    $redirect->redirect = $path['source'];
+    $redirect->language = $path['language'];
+    // Check if the redirect exists before saving.
+    $hash = redirect_hash($redirect);
+    $existing = redirect_load_by_hash($hash);
+    if (!$existing) {
+      redirect_save($redirect);
+    }
+    // If the existing redirect is disabled, re-enable it.
+    elseif (property_exists($existing, 'status') && $existing->status == 0) {
+      $existing->status = 1;
+      redirect_save($existing);
+    }
+  }
+
+
+  $rows = array(
+array('node/668', 'manufacturer/rexnord-centa', 'ru'),
+array('node/669', 'manufacturer/jihostroj', 'ru'),
+array('node/670', 'manufacturer/hydreco-david-brown-hydraulics', 'ru'),
+array('node/671', 'manufacturer/fpz-spa', 'ru'),
+array('node/672', 'manufacturer/lenze', 'ru'),
+array('node/673', 'manufacturer/hydac', 'ru'),
+array('node/674', 'manufacturer/endress-hauser', 'ru'),
+array('node/675', 'manufacturer/sew-eurodrive', 'ru'),
+array('node/676', 'manufacturer/aviteq', 'ru'),
+array('node/677', 'manufacturer/parker', 'ru'),
+array('node/678', 'manufacturer/vickers', 'ru'),
+array('node/679', 'manufacturer/elau', 'ru'),
+array('node/680', 'manufacturer/bucher', 'ru'),
+array('node/681', 'manufacturer/eaton', 'ru'),
+array('node/682', 'manufacturer/hawe', 'ru'),
+array('node/683', 'manufacturer/lincoln', 'ru'),
+array('node/684', 'manufacturer/moog', 'ru'),
+array('node/685', 'manufacturer/atlas-copco', 'ru'),
+array('node/686', 'manufacturer/fuji-electric', 'ru'),
+array('node/687', 'manufacturer/donaldson', 'ru'),
+array('node/688', 'manufacturer/abb', 'ru'),
+array('node/689', 'manufacturer/interroll', 'ru'),
+array('node/690', 'manufacturer/emerson', 'ru'),
+array('node/691', 'manufacturer/ebm-papst', 'ru'),
+array('node/692', 'manufacturer/mayr', 'ru'),
+array('node/693', 'manufacturer/aerzen', 'ru'),
+array('node/694', 'manufacturer/johnson-pump', 'ru'),
+array('node/695', 'manufacturer/demag', 'ru'),
+array('node/696', 'manufacturer/loos', 'ru'),
+array('node/697', 'manufacturer/weishaupt', 'ru'),
+array('node/698', 'manufacturer/vem', 'ru'),
+array('node/699', 'manufacturer/pyro-controle', 'ru'),
+array('node/700', 'manufacturer/infastaub', 'ru'),
+array('node/701', 'manufacturer/lechler', 'ru'),
+array('node/702', 'manufacturer/krohne', 'ru'),
+array('node/703', 'manufacturer/flexco', 'ru'),
+array('node/704', 'manufacturer/tandler', 'ru'),
+array('node/705', 'manufacturer/amada', 'ru'),
+array('node/706', 'manufacturer/motovario', 'ru'),
+array('node/707', 'manufacturer/bonfiglioli', 'ru'),
+array('node/708', 'manufacturer/seat', 'ru'),
+array('node/709', 'manufacturer/mgm-motori', 'ru'),
+array('node/710', 'manufacturer/motoriduttori', 'ru'),
+array('node/711', 'manufacturer/mp-filtri', 'ru'),
+array('node/712', 'manufacturer/italvibras', 'ru'),
+array('node/713', 'manufacturer/cantoni', 'ru'),
+array('node/714', 'manufacturer/caprari', 'ru'),
+array('node/715', 'manufacturer/euromotori', 'ru'),
+array('node/716', 'manufacturer/sgs', 'ru'),
+array('node/717', 'manufacturer/guehring', 'ru'),
+array('node/718', 'manufacturer/omron', 'ru'),
+array('node/719', 'manufacturer/pepperl-fuchs', 'ru'),
+array('node/720', 'manufacturer/pilz', 'ru'),
+array('node/721', 'manufacturer/hitachi', 'ru'),
+array('node/722', 'manufacturer/turck', 'ru'),
+array('node/723', 'manufacturer/sick', 'ru'),
+array('node/724', 'manufacturer/jumo', 'ru'),
+array('node/725', 'manufacturer/schmersal', 'ru'),
+array('node/726', 'manufacturer/allweiler', 'ru'),
+array('node/727', 'manufacturer/elmo-rietschle', 'ru'),
+array('node/728', 'manufacturer/gemu', 'ru'),
+array('node/729', 'manufacturer/ksb', 'ru'),
+array('node/730', 'manufacturer/netzsch', 'ru'),
+array('node/731', 'manufacturer/seepex', 'ru'),
+array('node/732', 'manufacturer/spirax-sarco', 'ru'),
+array('node/733', 'manufacturer/ge-bently-nevada', 'ru'),
+array('node/734', 'manufacturer/3d-systems-quickparts', 'ru'),
+array('node/735', 'manufacturer/abrasivos-manhattan', 'ru'),
+array('node/736', 'manufacturer/accofluor', 'ru'),
+array('node/737', 'manufacturer/ariel-corporation', 'ru'),
+array('node/738', 'manufacturer/armatury-group', 'ru'),
+array('node/739', 'manufacturer/ashcroft', 'ru'),
+array('node/740', 'manufacturer/agilent-technologies', 'ru'),
+array('node/741', 'manufacturer/akg-gruppe', 'ru'),
+array('node/742', 'manufacturer/anderson-greenwood', 'ru'),
+array('node/743', 'manufacturer/apollo-valves', 'ru'),
+array('node/744', 'manufacturer/atos', 'ru'),
+array('node/745', 'manufacturer/bhdt', 'ru'),
+array('node/746', 'manufacturer/biffi', 'ru'),
+array('node/747', 'manufacturer/bifold-group', 'ru'),
+array('node/748', 'manufacturer/bikon-technik', 'ru'),
+array('node/749', 'manufacturer/bosch-rexroth', 'ru'),
+array('node/750', 'manufacturer/brinkmann-pumps', 'ru'),
+array('node/751', 'manufacturer/cameron', 'ru'),
+array('node/752', 'manufacturer/couth', 'ru'),
+array('node/753', 'manufacturer/crosby', 'ru'),
+array('node/754', 'manufacturer/deprag-cz', 'ru'),
+array('node/755', 'manufacturer/destaco', 'ru'),
+array('node/756', 'manufacturer/dropsa', 'ru'),
+array('node/757', 'manufacturer/duplomatic-oleodinamica', 'ru'),
+array('node/758', 'manufacturer/estarta', 'ru'),
+array('node/759', 'manufacturer/fanuc', 'ru'),
+array('node/760', 'manufacturer/fibro', 'ru'),
+array('node/761', 'manufacturer/flowserve', 'ru'),
+array('node/762', 'manufacturer/flux', 'ru'),
+array('node/763', 'manufacturer/foxboro-eckardt', 'ru'),
+array('node/764', 'manufacturer/studer', 'ru'),
+array('node/765', 'manufacturer/gardner-denver', 'ru'),
+array('node/766', 'manufacturer/dmg-mori', 'ru'),
+array('node/767', 'manufacturer/gkn', 'ru'),
+array('node/768', 'manufacturer/grafoil', 'ru'),
+array('node/769', 'manufacturer/gromex-dichtungshaus', 'ru'),
+array('node/770', 'manufacturer/harting', 'ru'),
+array('node/771', 'manufacturer/hirel-connectors', 'ru'),
+array('node/772', 'manufacturer/honsberg', 'ru'),
+array('node/773', 'manufacturer/horton', 'ru'),
+array('node/774', 'manufacturer/hydrotechnik', 'ru'),
+array('node/775', 'manufacturer/ina', 'ru'),
+array('node/776', 'manufacturer/italmagneti', 'ru'),
+array('node/777', 'manufacturer/keyence', 'ru'),
+array('node/778', 'manufacturer/kieselmann', 'ru'),
+array('node/779', 'manufacturer/kinetrol', 'ru'),
+array('node/780', 'manufacturer/kistler', 'ru'),
+array('node/781', 'manufacturer/kitagawa', 'ru'),
+array('node/782', 'manufacturer/knoll', 'ru'),
+array('node/783', 'manufacturer/knuth', 'ru'),
+array('node/784', 'manufacturer/kordt', 'ru'),
+array('node/785', 'manufacturer/kuka', 'ru'),
+array('node/786', 'manufacturer/luvata', 'ru'),
+array('node/787', 'manufacturer/mahle', 'ru'),
+array('node/788', 'manufacturer/mercotac', 'ru'),
+array('node/789', 'manufacturer/metricon', 'ru'),
+array('node/790', 'manufacturer/metrix', 'ru'),
+array('node/791', 'manufacturer/metrol', 'ru'),
+array('node/792', 'manufacturer/minco', 'ru'),
+array('node/793', 'manufacturer/nagel-maschinen', 'ru'),
+array('node/794', 'manufacturer/national-oilwell-varco-nov', 'ru'),
+array('node/795', 'manufacturer/ntn-snr', 'ru'),
+array('node/796', 'manufacturer/oerlikon', 'ru'),
+array('node/797', 'manufacturer/orange-research', 'ru'),
+array('node/798', 'manufacturer/orsta-hydraulik', 'ru'),
+array('node/799', 'manufacturer/oteco', 'ru'),
+array('node/800', 'manufacturer/pall', 'ru'),
+array('node/801', 'manufacturer/prominent', 'ru'),
+array('node/802', 'manufacturer/settima', 'ru'),
+array('node/803', 'manufacturer/solberg', 'ru'),
+array('node/804', 'manufacturer/spieth', 'ru'),
+array('node/805', 'manufacturer/sumitomo-group', 'ru'),
+array('node/806', 'manufacturer/tornos', 'ru'),
+array('node/807', 'manufacturer/tuthill', 'ru'),
+array('node/808', 'manufacturer/weatherford', 'ru'),
+array('node/809', 'manufacturer/wenglor', 'ru'),
+array('node/810', 'manufacturer/woodward', 'ru'),
+array('node/811', 'manufacturer/vogel', 'ru'),
+array('node/812', 'manufacturer/mmc', 'ru'),
+array('node/813', 'manufacturer/hoyer-motors', 'ru'),
+array('node/814', 'manufacturer/marposs', 'ru'),
+array('node/815', 'manufacturer/ruch-servomotor', 'ru'),
+array('node/816', 'manufacturer/ortlinghaus', 'ru'),
+array('node/817', 'manufacturer/velan', 'ru'),
+array('node/818', 'manufacturer/kennametall', 'ru'),
+array('node/819', 'manufacturer/haver-boecker', 'ru'),
+array('node/820', 'manufacturer/flexim', 'ru'),
+array('node/821', 'manufacturer/kendrion-nv', 'ru'),
+array('node/822', 'manufacturer/jenoptik', 'ru'),
+array('node/823', 'manufacturer/tamagawa-seiki', 'ru'),
+array('node/824', 'manufacturer/larm', 'ru'),
+array('node/825', 'manufacturer/kavlico-pressure-sensors', 'ru'),
+array('node/826', 'manufacturer/hbm', 'ru'),
+array('node/827', 'manufacturer/resatron', 'ru'),
+array('node/828', 'manufacturer/howden', 'ru'),
+array('node/829', 'manufacturer/spx', 'ru'),
+array('node/830', 'manufacturer/munters', 'ru'),
+array('node/831', 'manufacturer/omt', 'ru'),
+array('node/832', 'manufacturer/heimbach', 'ru'),
+array('node/833', 'manufacturer/vokes-air', 'ru'),
+array('node/834', 'manufacturer/jonell-eurasia', 'ru'),
+array('node/835', 'manufacturer/gea-group', 'ru'),
+array('node/836', 'manufacturer/medit', 'ru'),
+array('node/837', 'manufacturer/ros', 'ru'),
+array('node/838', 'manufacturer/amot', 'ru'),
+array('node/839', 'manufacturer/rexnord', 'ru'),
+array('node/840', 'manufacturer/rema-tip-top', 'ru'),
+array('node/841', 'manufacturer/morgan-schaffer', 'ru'),
+array('node/842', 'manufacturer/mersen', 'ru'),
+array('node/843', 'manufacturer/facco', 'ru'),
+array('node/844', 'manufacturer/casar', 'ru'),
+array('node/845', 'manufacturer/vibra-schultheis', 'ru'),
+array('node/846', 'manufacturer/algi', 'ru'),
+array('node/847', 'manufacturer/renold', 'ru'),
+array('node/848', 'manufacturer/easy-mover', 'ru'),
+array('node/849', 'manufacturer/fetra', 'ru'),
+array('node/850', 'manufacturer/jost', 'ru'),
+array('node/851', 'manufacturer/oilgear', 'ru'),
+array('node/852', 'manufacturer/axon', 'ru'),
+array('node/853', 'manufacturer/knipex', 'ru'),
+array('node/854', 'manufacturer/parat', 'ru'),
+array('node/855', 'manufacturer/nov-mono', 'ru'),
+array('node/856', 'manufacturer/grunbeck', 'ru'),
+array('node/857', 'manufacturer/axis', 'ru'),
+array('node/858', 'manufacturer/pentair', 'ru'),
+array('node/859', 'manufacturer/xomox', 'ru'),
+array('node/860', 'manufacturer/john-crane', 'ru'),
+array('node/861', 'manufacturer/fisher', 'ru'),
+array('node/862', 'manufacturer/krombach-armaturen', 'ru'),
+array('node/863', 'manufacturer/pacific-valves', 'ru'),
+array('node/864', 'manufacturer/stockham', 'ru'),
+array('node/865', 'manufacturer/wta', 'ru'),
+array('node/866', 'manufacturer/weir', 'ru'),
+array('node/867', 'manufacturer/petrol-valves', 'ru'),
+array('node/868', 'manufacturer/bando', 'ru'),
+array('node/869', 'manufacturer/canawest', 'ru'),
+array('node/870', 'manufacturer/ebro-armaturen', 'ru'),
+array('node/871', 'manufacturer/econtrol', 'ru'),
+array('node/872', 'manufacturer/berarma', 'ru'),
+array('node/873', 'manufacturer/autronica', 'ru'),
+array('node/874', 'manufacturer/labor-security-system', 'ru'),
+array('node/875', 'manufacturer/restech-norway', 'ru'),
+array('node/876', 'manufacturer/murrplastik', 'ru'),
+array('node/877', 'manufacturer/euchner', 'ru'),
+array('node/878', 'manufacturer/moore-industries', 'ru'),
+array('node/879', 'manufacturer/celduc-relais', 'ru'),
+array('node/880', 'manufacturer/holland-controls', 'ru'),
+array('node/881', 'manufacturer/selec', 'ru'),
+array('node/882', 'manufacturer/petrogas', 'ru'),
+array('node/883', 'manufacturer/compressor-controls-corporation', 'ru'),
+array('node/884', 'manufacturer/voith-turbo', 'ru'),
+array('node/885', 'manufacturer/motoman-robotics', 'ru'),
+array('node/886', 'manufacturer/opcon', 'ru'),
+array('node/887', 'manufacturer/gali', 'ru'),
+array('node/888', 'manufacturer/stewart-and-stevenson', 'ru'),
+array('node/889', 'manufacturer/ruhrpumpen', 'ru'),
+array('node/890', 'manufacturer/odrill-mcm', 'ru'),
+array('node/891', 'manufacturer/ge-oil-gas', 'ru'),
+array('node/892', 'manufacturer/simaco', 'ru'),
+array('node/893', 'manufacturer/grundfos', 'ru'),
+array('node/894', 'manufacturer/bft', 'ru'),
+array('node/895', 'manufacturer/moyno', 'ru'),
+array('node/896', 'manufacturer/imo', 'ru'),
+array('node/897', 'manufacturer/asco-filtri', 'ru'),
+array('node/898', 'manufacturer/advanced-energy', 'ru'),
+array('node/899', 'manufacturer/scam', 'ru'),
+array('node/900', 'manufacturer/orwat-filtertechnik', 'ru'),
+array('node/901', 'manufacturer/coral-engineering', 'ru'),
+array('node/902', 'manufacturer/dustcontrol', 'ru'),
+array('node/903', 'manufacturer/camfil-farr', 'ru'),
+array('node/904', 'manufacturer/logan-oil-tools', 'ru'),
+array('node/905', 'manufacturer/mud-king', 'ru'),
+array('node/906', 'manufacturer/canrig-drilling-technology', 'ru'),
+array('node/907', 'manufacturer/den-con-tool', 'ru'),
+array('node/908', 'manufacturer/westco', 'ru'),
+array('node/909', 'manufacturer/lufkin-industries', 'ru'),
+array('node/910', 'manufacturer/mi-swaco', 'ru'),
+array('node/911', 'manufacturer/bvm-corporation-usa', 'ru'),
+array('node/912', 'manufacturer/top-co', 'ru'),
+array('node/913', 'manufacturer/eirich', 'ru'),
+array('node/914', 'manufacturer/coperion-k-tron', 'ru'),
+array('node/915', 'manufacturer/mazak', 'ru'),
+array('node/916', 'manufacturer/danobat-group', 'ru'),
+array('node/917', 'manufacturer/gpm-titan-international', 'ru'),
+array('node/918', 'manufacturer/murr-elektronik', 'ru'),
+array('node/919', 'manufacturer/espera', 'ru'),
+array('node/920', 'manufacturer/itw-dynatec', 'ru'),
+array('node/921', 'manufacturer/thimonnier', 'ru'),
+array('node/922', 'manufacturer/score-energy', 'ru'),
+array('node/923', 'manufacturer/ge-energy', 'ru'),
+array('node/924', 'manufacturer/siemens', 'ru'),
+array('node/925', 'manufacturer/ao-smith', 'ru'),
+array('node/926', 'manufacturer/ast-spa', 'ru'),
+array('node/927', 'manufacturer/accesus', 'ru'),
+array('node/928', 'manufacturer/ace-controls', 'ru'),
+array('node/929', 'manufacturer/agiltron-incorporated', 'ru'),
+array('node/930', 'manufacturer/agrati', 'ru'),
+array('node/931', 'manufacturer/aircom-pneumatic-gmbh', 'ru'),
+array('node/932', 'manufacturer/airtec-pneumatic', 'ru'),
+array('node/933', 'manufacturer/allen-bradley', 'ru'),
+array('node/934', 'manufacturer/aloyco', 'ru'),
+array('node/935', 'manufacturer/alphatron-marine', 'ru'),
+array('node/936', 'manufacturer/ametek', 'ru'),
+array('node/937', 'manufacturer/angst-pfister', 'ru'),
+array('node/938', 'manufacturer/artec', 'ru'),
+array('node/939', 'manufacturer/asahi-seiko', 'ru'),
+array('node/940', 'manufacturer/asm', 'ru'),
+array('node/941', 'manufacturer/atas-elektromotory', 'ru'),
+array('node/942', 'manufacturer/az-pneumatica', 'ru'),
+array('node/943', 'manufacturer/b-r', 'ru'),
+array('node/944', 'manufacturer/baldor-dodge', 'ru'),
+array('node/945', 'manufacturer/baltimore-aircoil-company', 'ru'),
+array('node/946', 'manufacturer/baruffaldi', 'ru'),
+array('node/947', 'manufacturer/baumer-hubner', 'ru'),
+array('node/948', 'manufacturer/bce', 'ru'),
+array('node/949', 'manufacturer/beckhoff-automation-gmbh', 'ru'),
+array('node/950', 'manufacturer/beko-technologies-gmbh', 'ru'),
+array('node/951', 'manufacturer/beta-lasermike', 'ru'),
+array('node/952', 'manufacturer/bgk-endlosband', 'ru'),
+array('node/953', 'manufacturer/bilz-vibration-technology-ag', 'ru'),
+array('node/954', 'manufacturer/bilz-werkzeugfabrik-gmbh', 'ru'),
+array('node/955', 'manufacturer/breco-zahnriemen', 'ru'),
+array('node/956', 'manufacturer/brevetti-stendalto-spa', 'ru'),
+array('node/957', 'manufacturer/bst-eltromat-international', 'ru'),
+array('node/958', 'manufacturer/btf-bouvier-technofour', 'ru'),
+array('node/959', 'manufacturer/buhler-technologies', 'ru'),
+array('node/960', 'manufacturer/burny-kaliburn', 'ru'),
+array('node/961', 'manufacturer/campen-machinery', 'ru'),
+array('node/962', 'manufacturer/caterpillar', 'ru'),
+array('node/963', 'manufacturer/cdr-pompe', 'ru'),
+array('node/964', 'manufacturer/cejn', 'ru'),
+array('node/965', 'manufacturer/center-line', 'ru'),
+array('node/966', 'manufacturer/century-electric', 'ru'),
+array('node/967', 'manufacturer/comagrav', 'ru'),
+array('node/968', 'manufacturer/comunello', 'ru'),
+array('node/969', 'manufacturer/conti', 'ru'),
+array('node/970', 'manufacturer/controlair', 'ru'),
+array('node/971', 'manufacturer/coorstek', 'ru'),
+array('node/972', 'manufacturer/coremo-ocmea', 'ru'),
+array('node/973', 'manufacturer/crane-chempharma-energy', 'ru'),
+array('node/974', 'manufacturer/crane-valve-services', 'ru'),
+array('node/975', 'manufacturer/crowcon', 'ru'),
+array('node/976', 'manufacturer/cubiscan', 'ru'),
+array('node/977', 'manufacturer/dana-corporation', 'ru'),
+array('node/978', 'manufacturer/danaher-motion', 'ru'),
+array('node/979', 'manufacturer/danfoss', 'ru'),
+array('node/980', 'manufacturer/delta-electronics', 'ru'),
+array('node/981', 'manufacturer/denimotech', 'ru'),
+array('node/982', 'manufacturer/depa', 'ru'),
+array('node/983', 'manufacturer/det-tronics', 'ru'),
+array('node/984', 'manufacturer/dietz-motoren', 'ru'),
+array('node/985', 'manufacturer/gildemeister', 'ru'),
+array('node/986', 'manufacturer/drader-manufacturing', 'ru'),
+array('node/987', 'manufacturer/duo-chek', 'ru'),
+array('node/988', 'manufacturer/duplomatic-automation', 'ru'),
+array('node/989', 'manufacturer/dynasonics', 'ru'),
+array('node/990', 'manufacturer/e-tech-machinery', 'ru'),
+array('node/991', 'manufacturer/elesa-ganter', 'ru'),
+array('node/992', 'manufacturer/elma-schmidbauer-gmbh', 'ru'),
+array('node/993', 'manufacturer/elro', 'ru'),
+array('node/994', 'manufacturer/emit', 'ru'),
+array('node/995', 'manufacturer/enidine', 'ru'),
+array('node/996', 'manufacturer/enraf-tanksystem', 'ru'),
+array('node/997', 'manufacturer/enviolet', 'ru'),
+array('node/998', 'manufacturer/eppensteiner', 'ru'),
+array('node/999', 'manufacturer/esco-couplings', 'ru'),
+array('node/1000', 'manufacturer/eurofill', 'ru'),
+array('node/1001', 'manufacturer/europarts-drochow-gmbh', 'ru'),
+array('node/1002', 'manufacturer/eurosmc', 'ru'),
+array('node/1003', 'manufacturer/exact-pipe-cutting-system', 'ru'),
+array('node/1004', 'manufacturer/exair', 'ru'),
+array('node/1005', 'manufacturer/fameccanica', 'ru'),
+array('node/1006', 'manufacturer/farris', 'ru'),
+array('node/1007', 'manufacturer/federal-signal', 'ru'),
+array('node/1008', 'manufacturer/fema-srl', 'ru'),
+array('node/1009', 'manufacturer/ferjovi', 'ru'),
+array('node/1010', 'manufacturer/ferroplan', 'ru'),
+array('node/1011', 'manufacturer/fima', 'ru'),
+array('node/1012', 'manufacturer/flexitallic', 'ru'),
+array('node/1013', 'manufacturer/flowseal', 'ru'),
+array('node/1014', 'manufacturer/flucom', 'ru'),
+array('node/1015', 'manufacturer/fluenta', 'ru'),
+array('node/1016', 'manufacturer/gamak-motor', 'ru'),
+array('node/1017', 'manufacturer/general-electric-company', 'ru'),
+array('node/1018', 'manufacturer/georgin', 'ru'),
+array('node/1019', 'manufacturer/geppert-band', 'ru'),
+array('node/1020', 'manufacturer/gmn-paul-muller-industrie', 'ru'),
+array('node/1021', 'manufacturer/gohl', 'ru'),
+array('node/1022', 'manufacturer/good-hand', 'ru'),
+array('node/1023', 'manufacturer/goulds-pumps', 'ru'),
+array('node/1024', 'manufacturer/graco', 'ru'),
+array('node/1025', 'manufacturer/gudel-ag', 'ru'),
+array('node/1026', 'manufacturer/gustav-gockel', 'ru'),
+array('node/1027', 'manufacturer/hahn-gasfedern', 'ru'),
+array('node/1028', 'manufacturer/haki', 'ru'),
+array('node/1029', 'manufacturer/harris-corporation', 'ru'),
+array('node/1030', 'manufacturer/herose', 'ru'),
+array('node/1031', 'manufacturer/hiwin', 'ru'),
+array('node/1032', 'manufacturer/hohner-automazione', 'ru'),
+array('node/1033', 'manufacturer/houttuin-bv', 'ru'),
+array('node/1034', 'manufacturer/hydra-cell', 'ru'),
+array('node/1035', 'manufacturer/hypertherm', 'ru'),
+array('node/1036', 'manufacturer/hytor', 'ru'),
+array('node/1037', 'manufacturer/id-insert-deal', 'ru'),
+array('node/1038', 'manufacturer/igus', 'ru'),
+array('node/1039', 'manufacturer/imasa', 'ru'),
+array('node/1040', 'manufacturer/imetal', 'ru'),
+array('node/1041', 'manufacturer/ingersoll-rand', 'ru'),
+array('node/1042', 'manufacturer/inoxihp', 'ru'),
+array('node/1043', 'manufacturer/inoxpa', 'ru'),
+array('node/1044', 'manufacturer/itemat', 'ru'),
+array('node/1045', 'manufacturer/iwis', 'ru'),
+array('node/1046', 'manufacturer/jainnher', 'ru'),
+array('node/1047', 'manufacturer/jaudt-dosiertechnik', 'ru'),
+array('node/1048', 'manufacturer/jdsu', 'ru'),
+array('node/1049', 'manufacturer/jec-pumps', 'ru'),
+array('node/1050', 'manufacturer/jenkins', 'ru'),
+array('node/1051', 'manufacturer/jovyatlas-euroatlas', 'ru'),
+array('node/1052', 'manufacturer/kabelschlepp', 'ru'),
+array('node/1053', 'manufacturer/karl-schnell', 'ru'),
+array('node/1054', 'manufacturer/kellenberger', 'ru'),
+array('node/1055', 'manufacturer/keystone', 'ru'),
+array('node/1056', 'manufacturer/kjellberg-finsterwalde', 'ru'),
+array('node/1057', 'manufacturer/klay-instruments', 'ru'),
+array('node/1058', 'manufacturer/koehler-instrument', 'ru'),
+array('node/1059', 'manufacturer/koganei', 'ru'),
+array('node/1060', 'manufacturer/korea-hoist', 'ru'),
+array('node/1061', 'manufacturer/koreel', 'ru'),
+array('node/1062', 'manufacturer/kubicek-vhs', 'ru'),
+array('node/1063', 'manufacturer/kumera', 'ru'),
+array('node/1064', 'manufacturer/lahti-precision', 'ru'),
+array('node/1065', 'manufacturer/lam-technologies', 'ru'),
+array('node/1066', 'manufacturer/legris', 'ru'),
+array('node/1067', 'manufacturer/losma', 'ru'),
+array('node/1068', 'manufacturer/lutz', 'ru'),
+array('node/1069', 'manufacturer/mann-filter', 'ru'),
+array('node/1070', 'manufacturer/masa-gmbh', 'ru'),
+array('node/1071', 'manufacturer/masoneilan', 'ru'),
+array('node/1072', 'manufacturer/mec-fluid-2', 'ru'),
+array('node/1073', 'manufacturer/mecvel', 'ru'),
+array('node/1074', 'manufacturer/microstep', 'ru'),
+array('node/1075', 'manufacturer/mingardi', 'ru'),
+array('node/1076', 'manufacturer/misumi', 'ru'),
+array('node/1077', 'manufacturer/mobrey-measurement', 'ru'),
+array('node/1078', 'manufacturer/mtl', 'ru'),
+array('node/1079', 'manufacturer/mts-sensors', 'ru'),
+array('node/1080', 'manufacturer/mulco', 'ru'),
+array('node/1081', 'manufacturer/multiserw-morek', 'ru'),
+array('node/1082', 'manufacturer/munaretto', 'ru'),
+array('node/1083', 'manufacturer/murrelektronik', 'ru'),
+array('node/1084', 'manufacturer/neumann-elektronik', 'ru'),
+array('node/1085', 'manufacturer/nexoil-srl', 'ru'),
+array('node/1086', 'manufacturer/nibco', 'ru'),
+array('node/1087', 'manufacturer/nik', 'ru'),
+array('node/1088', 'manufacturer/nippon-bearings', 'ru'),
+array('node/1089', 'manufacturer/nova-rotors', 'ru'),
+array('node/1090', 'manufacturer/noz-chek', 'ru'),
+array('node/1091', 'manufacturer/ntron', 'ru'),
+array('node/1092', 'manufacturer/numatics-incorporated', 'ru'),
+array('node/1093', 'manufacturer/omni-flow-computers', 'ru'),
+array('node/1094', 'manufacturer/orga', 'ru'),
+array('node/1095', 'manufacturer/paktech-ltd', 'ru'),
+array('node/1096', 'manufacturer/panametrics', 'ru'),
+array('node/1097', 'manufacturer/parker-ssd-parvex', 'ru'),
+array('node/1098', 'manufacturer/pei', 'ru'),
+array('node/1099', 'manufacturer/peter-wolters', 'ru'),
+array('node/1100', 'manufacturer/phoenix-contact', 'ru'),
+
+array('node/1101', 'manufacturer/phytron-elektronik', 'ru'),
+array('node/1102', 'manufacturer/piab', 'ru'),
+array('node/1103', 'manufacturer/prostar', 'ru'),
+array('node/1104', 'manufacturer/proxitron', 'ru'),
+array('node/1105', 'manufacturer/psi-products', 'ru'),
+array('node/1106', 'manufacturer/quick-soldering', 'ru'),
+array('node/1107', 'manufacturer/r-w', 'ru'),
+array('node/1108', 'manufacturer/raasm', 'ru'),
+array('node/1109', 'manufacturer/rathi-transpower', 'ru'),
+array('node/1110', 'manufacturer/repar2', 'ru'),
+array('node/1111', 'manufacturer/resistoflex', 'ru'),
+array('node/1112', 'manufacturer/resistopure', 'ru'),
+array('node/1113', 'manufacturer/revo', 'ru'),
+array('node/1114', 'manufacturer/rheonik', 'ru'),
+array('node/1115', 'manufacturer/rineer-hydraulics', 'ru'),
+array('node/1116', 'manufacturer/rio', 'ru'),
+array('node/1117', 'manufacturer/rk-rose-krieger', 'ru'),
+array('node/1118', 'manufacturer/rmg-honeywell', 'ru'),
+array('node/1119', 'manufacturer/rockwell-automation', 'ru'),
+array('node/1120', 'manufacturer/rohde-schwarz', 'ru'),
+array('node/1121', 'manufacturer/rollven', 'ru'),
+array('node/1122', 'manufacturer/rosemount', 'ru'),
+array('node/1123', 'manufacturer/rota-engineering', 'ru'),
+array('node/1124', 'manufacturer/rotar', 'ru'),
+array('node/1125', 'manufacturer/rotor', 'ru'),
+array('node/1126', 'manufacturer/rotork', 'ru'),
+array('node/1127', 'manufacturer/rti-electronics', 'ru'),
+array('node/1128', 'manufacturer/saint-gobain-pam', 'ru'),
+array('node/1129', 'manufacturer/sapag', 'ru'),
+array('node/1130', 'manufacturer/sapit-flex', 'ru'),
+array('node/1131', 'manufacturer/saunders', 'ru'),
+array('node/1132', 'manufacturer/schuette', 'ru'),
+array('node/1133', 'manufacturer/schunk', 'ru'),
+array('node/1134', 'manufacturer/schwanog', 'ru'),
+array('node/1135', 'manufacturer/scintrex', 'ru'),
+array('node/1136', 'manufacturer/selco', 'ru'),
+array('node/1137', 'manufacturer/sermas-industrie', 'ru'),
+array('node/1138', 'manufacturer/siccis-sa', 'ru'),
+array('node/1139', 'manufacturer/simalube', 'ru'),
+array('node/1140', 'manufacturer/skf', 'ru'),
+array('node/1141', 'manufacturer/slf', 'ru'),
+array('node/1142', 'manufacturer/sor-inc', 'ru'),
+array('node/1143', 'manufacturer/stephan-machinery', 'ru'),
+array('node/1144', 'manufacturer/stp-impianti', 'ru'),
+array('node/1145', 'manufacturer/suco', 'ru'),
+array('node/1146', 'manufacturer/sulzer', 'ru'),
+array('node/1147', 'manufacturer/sundyne', 'ru'),
+array('node/1148', 'manufacturer/supertec-machinery', 'ru'),
+array('node/1149', 'manufacturer/talleres-lualva', 'ru'),
+array('node/1150', 'manufacturer/teat-spa', 'ru'),
+array('node/1151', 'manufacturer/tecnologie-speciali-applicate', 'ru'),
+array('node/1152', 'manufacturer/tegea', 'ru'),
+array('node/1153', 'manufacturer/teka-maschinenbau', 'ru'),
+array('node/1154', 'manufacturer/tengxuan', 'ru'),
+array('node/1155', 'manufacturer/terlet', 'ru'),
+array('node/1156', 'manufacturer/thermo-engineering', 'ru'),
+array('node/1157', 'manufacturer/timken', 'ru'),
+array('node/1158', 'manufacturer/tollok', 'ru'),
+array('node/1159', 'manufacturer/totem', 'ru'),
+array('node/1160', 'manufacturer/triangle', 'ru'),
+array('node/1161', 'manufacturer/tsissg', 'ru'),
+array('node/1162', 'manufacturer/tube', 'ru'),
+array('node/1163', 'manufacturer/tuinsa-norte', 'ru'),
+array('node/1164', 'manufacturer/turbotecnica', 'ru'),
+array('node/1165', 'manufacturer/uni-chek', 'ru'),
+array('node/1166', 'manufacturer/uromac', 'ru'),
+array('node/1167', 'manufacturer/valeo', 'ru'),
+array('node/1168', 'manufacturer/validyne', 'ru'),
+array('node/1169', 'manufacturer/vanessa', 'ru'),
+array('node/1170', 'manufacturer/var-spe', 'ru'),
+array('node/1171', 'manufacturer/verder', 'ru'),
+array('node/1172', 'manufacturer/versa', 'ru'),
+array('node/1173', 'manufacturer/victor-pumps', 'ru'),
+array('node/1174', 'manufacturer/vindum', 'ru'),
+array('node/1175', 'manufacturer/voumard', 'ru'),
+array('node/1176', 'manufacturer/walter', 'ru'),
+array('node/1177', 'manufacturer/walvoil', 'ru'),
+array('node/1178', 'manufacturer/wandfluh', 'ru'),
+array('node/1179', 'manufacturer/waukesha-motor-company', 'ru'),
+array('node/1180', 'manufacturer/weforma', 'ru'),
+array('node/1181', 'manufacturer/weg', 'ru'),
+array('node/1182', 'manufacturer/weiss-gmbh', 'ru'),
+array('node/1183', 'manufacturer/welte', 'ru'),
+array('node/1184', 'manufacturer/willbrandt-gummitechnik', 'ru'),
+array('node/1185', 'manufacturer/yarway', 'ru'),
+array('node/1186', 'manufacturer/zeck-gmbh', 'ru'),
+array('node/1187', 'manufacturer/zf-friedrichshafen-ag', 'ru'),
+array('node/1188', 'manufacturer/zhenan-welding', 'ru'),
+array('node/1189', 'manufacturer/wera', 'ru'),
+array('node/1190', 'manufacturer/adz-nagano', 'ru'),
+array('node/1191', 'manufacturer/amf', 'ru'),
+array('node/1192', 'manufacturer/apc', 'ru'),
+array('node/1193', 'manufacturer/argo-hytos', 'ru'),
+array('node/1194', 'manufacturer/artesyn-embedded-technologies', 'ru'),
+array('node/1195', 'manufacturer/atotech', 'ru'),
+array('node/1196', 'manufacturer/autorotor', 'ru'),
+array('node/1197', 'manufacturer/mettler-toledo', 'ru'),
+array('node/1198', 'manufacturer/deublin-italiana', 'ru'),
+array('node/1199', 'manufacturer/festo', 'ru'),
+array('node/1200', 'manufacturer/schubert-salzer', 'ru'),
+array('node/1201', 'manufacturer/yaskawa', 'ru'),
+array('node/1202', 'manufacturer/ohaus-corporation', 'ru'),
+array('node/1203', 'manufacturer/lamsystems', 'ru'),
+array('node/1204', 'manufacturer/spectron', 'ru'),
+array('node/1205', 'manufacturer/onda', 'ru'),
+array('node/1206', 'manufacturer/topgrafit', 'ru'),
+array('node/1207', 'manufacturer/neftehimavtomatika', 'ru'),
+array('node/1208', 'manufacturer/pskov-ekologiya', 'ru'),
+array('node/1209', 'manufacturer/nabertherm', 'ru'),
+array('node/1210', 'manufacturer/ika', 'ru'),
+array('node/1211', 'manufacturer/stimzet', 'ru'),
+array('node/1212', 'manufacturer/stromag', 'ru'),
+array('node/1213', 'manufacturer/hoerbiger', 'ru'),
+array('node/1214', 'manufacturer/camozzi', 'ru'),
+array('node/1215', 'manufacturer/jabsco', 'ru'),
+array('node/1216', 'manufacturer/ifm', 'ru'),
+array('node/1217', 'manufacturer/gefran', 'ru'),
+array('node/1218', 'manufacturer/datasensor', 'ru'),
+array('node/1219', 'manufacturer/hsme', 'ru'),
+array('node/1220', 'manufacturer/busch', 'ru'),
+array('node/1221', 'manufacturer/adrian', 'ru'),
+array('node/1222', 'manufacturer/aeg-power-solutions', 'ru'),
+array('node/1223', 'manufacturer/aeroflex-cobham', 'ru'),
+array('node/1224', 'manufacturer/agrichema', 'ru'),
+array('node/1225', 'manufacturer/aignep', 'ru'),
+array('node/1226', 'manufacturer/airtac', 'ru'),
+array('node/1227', 'manufacturer/airwork', 'ru'),
+array('node/1228', 'manufacturer/alfa-laval', 'ru'),
+array('node/1229', 'manufacturer/alfred-gruber', 'ru'),
+array('node/1230', 'manufacturer/alfred-jager', 'ru'),
+array('node/1231', 'manufacturer/al-ko', 'ru'),
+array('node/1232', 'manufacturer/altair', 'ru'),
+array('node/1233', 'manufacturer/amandus-kahl', 'ru'),
+array('node/1234', 'manufacturer/amphenol', 'ru'),
+array('node/1235', 'manufacturer/anlagenbau-bohmer', 'ru'),
+array('node/1236', 'manufacturer/anybus', 'ru'),
+array('node/1237', 'manufacturer/arcol', 'ru'),
+array('node/1238', 'manufacturer/armstrong', 'ru'),
+array('node/1239', 'manufacturer/aros', 'ru'),
+array('node/1240', 'manufacturer/atb', 'ru'),
+array('node/1241', 'manufacturer/auma', 'ru'),
+array('node/1242', 'manufacturer/bahco', 'ru'),
+array('node/1243', 'manufacturer/baka', 'ru'),
+array('node/1244', 'manufacturer/becker', 'ru'),
+array('node/1245', 'manufacturer/blickle', 'ru'),
+array('node/1246', 'manufacturer/bohle', 'ru'),
+array('node/1247', 'manufacturer/bohmer', 'ru'),
+array('node/1248', 'manufacturer/brano-group', 'ru'),
+array('node/1249', 'manufacturer/brevini-fluid-power', 'ru'),
+array('node/1250', 'manufacturer/bruel', 'ru'),
+array('node/1251', 'manufacturer/caproni', 'ru'),
+array('node/1252', 'manufacturer/compair', 'ru'),
+array('node/1253', 'manufacturer/conductix-wampfler', 'ru'),
+array('node/1254', 'manufacturer/cressto', 'ru'),
+array('node/1255', 'manufacturer/crouzet', 'ru'),
+array('node/1256', 'manufacturer/crydom', 'ru'),
+array('node/1257', 'manufacturer/dungs', 'ru'),
+array('node/1258', 'manufacturer/dynalco', 'ru'),
+array('node/1259', 'manufacturer/dynapar', 'ru'),
+array('node/1260', 'manufacturer/ac-motoren', 'ru'),
+array('node/1261', 'manufacturer/warner-electric', 'ru'),
+array('node/1262', 'manufacturer/watts-industries', 'ru'),
+array('node/1263', 'manufacturer/wedeco', 'ru'),
+array('node/1264', 'manufacturer/weidmuller', 'ru'),
+array('node/1265', 'manufacturer/weigel', 'ru'),
+array('node/1266', 'manufacturer/weldotherm', 'ru'),
+array('node/1267', 'manufacturer/werma', 'ru'),
+array('node/1268', 'manufacturer/wieland-electric', 'ru'),
+array('node/1269', 'manufacturer/wilden-pumps', 'ru'),
+array('node/1270', 'manufacturer/wilo', 'ru'),
+array('node/1271', 'manufacturer/wippermann', 'ru'),
+array('node/1272', 'manufacturer/wisdom-audio', 'ru'),
+array('node/1273', 'manufacturer/wittenstein-alpha', 'ru'),
+array('node/1274', 'manufacturer/wittmann-battenfeld', 'ru'),
+array('node/1275', 'manufacturer/wittmann-werkzeuge', 'ru'),
+array('node/1276', 'manufacturer/woerner', 'ru'),
+array('node/1277', 'manufacturer/wp-aro', 'ru'),
+array('node/1278', 'manufacturer/wurm', 'ru'),
+array('node/1279', 'manufacturer/xecro', 'ru'),
+array('node/1280', 'manufacturer/yamatake', 'ru'),
+array('node/1281', 'manufacturer/yannmar', 'ru'),
+array('node/1282', 'manufacturer/balluff', 'ru'),
+array('node/1283', 'manufacturer/banner-batterien', 'ru'),
+array('node/1284', 'manufacturer/bansbach', 'ru'),
+array('node/1285', 'manufacturer/bauhuis', 'ru'),
+array('node/1286', 'manufacturer/beco', 'ru'),
+array('node/1287', 'manufacturer/bei-sensors', 'ru'),
+array('node/1288', 'manufacturer/belden', 'ru'),
+array('node/1289', 'manufacturer/belimo', 'ru'),
+array('node/1290', 'manufacturer/belloi-and-romagnoli', 'ru'),
+array('node/1291', 'manufacturer/berghof', 'ru'),
+array('node/1292', 'manufacturer/bernard-controls', 'ru'),
+array('node/1293', 'manufacturer/bessey', 'ru'),
+array('node/1294', 'manufacturer/bielomatik', 'ru'),
+array('node/1295', 'manufacturer/bihl-wiedemann', 'ru'),
+array('node/1296', 'manufacturer/bimba', 'ru'),
+array('node/1297', 'manufacturer/binmaster', 'ru'),
+array('node/1298', 'manufacturer/bircher-reglomat', 'ru'),
+array('node/1299', 'manufacturer/black-box', 'ru'),
+array('node/1300', 'manufacturer/block-transformatoren-elektronik', 'ru'),
+array('node/1301', 'manufacturer/bockwoldt', 'ru'),
+array('node/1302', 'manufacturer/boge', 'ru'),
+array('node/1303', 'manufacturer/bondioli-and-pavesi', 'ru'),
+array('node/1304', 'manufacturer/bonetti-armaturen', 'ru'),
+array('node/1305', 'manufacturer/brahma-spa', 'ru'),
+array('node/1306', 'manufacturer/burkert', 'ru'),
+array('node/1307', 'manufacturer/captron', 'ru'),
+array('node/1308', 'manufacturer/carbo-weld', 'ru'),
+array('node/1309', 'manufacturer/carel', 'ru'),
+array('node/1310', 'manufacturer/carlo-gavazzi', 'ru'),
+array('node/1311', 'manufacturer/ceag', 'ru'),
+array('node/1312', 'manufacturer/ceccato', 'ru'),
+array('node/1313', 'manufacturer/celsa-messgerate', 'ru'),
+array('node/1314', 'manufacturer/cimbria', 'ru'),
+array('node/1315', 'manufacturer/coesfeld', 'ru'),
+array('node/1316', 'manufacturer/colmant-cuvelier', 'ru'),
+array('node/1317', 'manufacturer/conch', 'ru'),
+array('node/1318', 'manufacturer/cummins', 'ru'),
+array('node/1319', 'manufacturer/dormer-pramet', 'ru'),
+array('node/1320', 'manufacturer/drager', 'ru'),
+array('node/1321', 'manufacturer/dwyer', 'ru'),
+array('node/1322', 'manufacturer/gates', 'ru'),
+array('node/1323', 'manufacturer/bernstein', 'ru'),
+array('node/1324', 'manufacturer/bruel-and-kjaer', 'ru'),
+array('node/1325', 'manufacturer/bizerba', 'ru'),
+array('node/1326', 'manufacturer/brook-crompton', 'ru'),
+array('node/1327', 'manufacturer/castel-valves', 'ru'),
+array('node/1328', 'manufacturer/certuss', 'ru'),
+array('node/1329', 'manufacturer/cognex', 'ru'),
+array('node/1330', 'manufacturer/comat-releco', 'ru'),
+array('node/1331', 'manufacturer/comintec', 'ru'),
+array('node/1332', 'manufacturer/contitech', 'ru'),
+array('node/1333', 'manufacturer/comitronic-bti', 'ru'),
+array('node/1334', 'manufacturer/contrinex', 'ru'),
+array('node/1335', 'manufacturer/costruzioni-elettrotecniche-cear', 'ru'),
+array('node/1336', 'manufacturer/datalogic', 'ru'),
+array('node/1337', 'manufacturer/detectomat', 'ru'),
+array('node/1338', 'manufacturer/dhatec', 'ru'),
+array('node/1339', 'manufacturer/dieter-roth', 'ru'),
+array('node/1340', 'manufacturer/dilo', 'ru'),
+array('node/1341', 'manufacturer/dold', 'ru'),
+array('node/1342', 'manufacturer/durag', 'ru'),
+array('node/1343', 'manufacturer/eao', 'ru'),
+array('node/1344', 'manufacturer/ecolab', 'ru'),
+array('node/1345', 'manufacturer/elap', 'ru'),
+array('node/1346', 'manufacturer/elcis-encoder', 'ru'),
+array('node/1347', 'manufacturer/elettrotec', 'ru'),
+array('node/1348', 'manufacturer/elmess', 'ru'),
+array('node/1349', 'manufacturer/elobau', 'ru'),
+array('node/1350', 'manufacturer/elspro-elektrotechnik', 'ru'),
+array('node/1351', 'manufacturer/elster-kromschroeder', 'ru'),
+array('node/1352', 'manufacturer/eltra-elemental-analyzers', 'ru'),
+array('node/1353', 'manufacturer/eltrotec', 'ru'),
+array('node/1354', 'manufacturer/emas', 'ru'),
+array('node/1355', 'manufacturer/emile-egger', 'ru'),
+array('node/1356', 'manufacturer/emod', 'ru'),
+array('node/1357', 'manufacturer/erhardtleimer', 'ru'),
+array('node/1358', 'manufacturer/esweld', 'ru'),
+array('node/1359', 'manufacturer/everblue', 'ru'),
+array('node/1360', 'manufacturer/faber-kabel', 'ru'),
+array('node/1361', 'manufacturer/fabory', 'ru'),
+array('node/1362', 'manufacturer/facom', 'ru'),
+array('node/1363', 'manufacturer/fafnir', 'ru'),
+array('node/1364', 'manufacturer/fag', 'ru'),
+array('node/1365', 'manufacturer/fairchild-semiconductor', 'ru'),
+array('node/1366', 'manufacturer/fatek', 'ru'),
+array('node/1367', 'manufacturer/ferrarini-and-benelli', 'ru'),
+array('node/1368', 'manufacturer/ferraz-shawmut', 'ru'),
+array('node/1369', 'manufacturer/fhf', 'ru'),
+array('node/1370', 'manufacturer/finder', 'ru'),
+array('node/1371', 'manufacturer/finetek', 'ru'),
+array('node/1372', 'manufacturer/fipa', 'ru'),
+array('node/1373', 'manufacturer/first-sensor', 'ru'),
+array('node/1374', 'manufacturer/fixtest', 'ru'),
+array('node/1375', 'manufacturer/flexschlauch-produktions', 'ru'),
+array('node/1376', 'manufacturer/fluro-gelenklager', 'ru'),
+array('node/1377', 'manufacturer/fronius', 'ru'),
+array('node/1378', 'manufacturer/fumo', 'ru'),
+array('node/1379', 'manufacturer/gantner-technologies', 'ru'),
+array('node/1380', 'manufacturer/garlock', 'ru'),
+array('node/1381', 'manufacturer/geco', 'ru'),
+array('node/1382', 'manufacturer/gemels', 'ru'),
+array('node/1383', 'manufacturer/gernep', 'ru'),
+array('node/1384', 'manufacturer/gossen', 'ru'),
+array('node/1385', 'manufacturer/groschopp', 'ru'),
+array('node/1386', 'manufacturer/gsr-ventiltechnik', 'ru'),
+array('node/1387', 'manufacturer/guhring', 'ru'),
+array('node/1388', 'manufacturer/habasit', 'ru'),
+array('node/1389', 'manufacturer/haug', 'ru'),
+array('node/1390', 'manufacturer/hengesbach', 'ru'),
+array('node/1391', 'manufacturer/hensle-zufuhrtechnik', 'ru'),
+array('node/1392', 'manufacturer/eltra', 'ru'),
+array('node/1393', 'manufacturer/zanasi', 'ru'),
+array('node/1394', 'manufacturer/zebra', 'ru'),
+array('node/1395', 'manufacturer/ziehl', 'ru'),
+array('node/1396', 'manufacturer/ziemann-holvrieka', 'ru'),
+array('node/1397', 'manufacturer/zimmer', 'ru'),
+array('node/1398', 'manufacturer/zollern', 'ru'),
+array('node/1399', 'manufacturer/thermik', 'ru'),
+array('node/1400', 'manufacturer/thk', 'ru'),
+array('node/1401', 'manufacturer/thomson', 'ru'),
+array('node/1402', 'manufacturer/tippkemper-matrix', 'ru'),
+array('node/1403', 'manufacturer/timsa', 'ru'),
+array('node/1404', 'manufacturer/tkd-kabel', 'ru'),
+array('node/1405', 'manufacturer/tunkers', 'ru'),
+array('node/1406', 'manufacturer/uitert', 'ru'),
+array('node/1407', 'manufacturer/unimec', 'ru'),
+array('node/1408', 'manufacturer/unioeler', 'ru'),
+array('node/1409', 'manufacturer/univer', 'ru'),
+array('node/1410', 'manufacturer/utp', 'ru'),
+array('node/1411', 'manufacturer/vacom', 'ru'),
+array('node/1412', 'manufacturer/valco-melton', 'ru'),
+array('node/1413', 'manufacturer/valsteam-adca', 'ru'),
+array('node/1414', 'manufacturer/varimex-valves', 'ru'),
+array('node/1415', 'manufacturer/vc-convert', 'ru'),
+array('node/1416', 'manufacturer/vega', 'ru'),
+array('node/1417', 'manufacturer/vibro-meter-meggitt', 'ru'),
+array('node/1418', 'manufacturer/vishay', 'ru'),
+array('node/1419', 'manufacturer/vivoil-oleodinamica', 'ru'),
+array('node/1420', 'manufacturer/vmi-mixer', 'ru'),
+array('node/1421', 'manufacturer/wachendorff', 'ru'),
+array('node/1422', 'manufacturer/wago', 'ru'),
+array('node/1423', 'manufacturer/waldmann', 'ru'),
+array('node/1424', 'manufacturer/harmonic-drive', 'ru'),
+array('node/1425', 'manufacturer/hydrolas', 'ru'),
+array('node/1426', 'manufacturer/igeba', 'ru'),
+array('node/1427', 'manufacturer/interflon', 'ru'),
+array('node/1428', 'manufacturer/intorq', 'ru'),
+array('node/1429', 'manufacturer/ipf', 'ru'),
+array('node/1430', 'manufacturer/juchheim', 'ru'),
+array('node/1431', 'manufacturer/kari-finn', 'ru'),
+array('node/1432', 'manufacturer/kemmler', 'ru'),
+array('node/1433', 'manufacturer/kobold', 'ru'),
+array('node/1434', 'manufacturer/korloy', 'ru'),
+array('node/1435', 'manufacturer/lapp-kabel', 'ru'),
+array('node/1436', 'manufacturer/lauda', 'ru'),
+array('node/1437', 'manufacturer/robuschi', 'ru'),
+array('node/1438', 'manufacturer/mattei', 'ru'),
+array('node/1439', 'manufacturer/mean-well', 'ru'),
+array('node/1440', 'manufacturer/roemheld', 'ru'),
+array('node/1441', 'manufacturer/roquet', 'ru'),
+array('node/1442', 'manufacturer/ruko', 'ru'),
+array('node/1443', 'manufacturer/samson', 'ru'),
+array('node/1444', 'manufacturer/sandvik-coromant', 'ru'),
+array('node/1445', 'manufacturer/schaeffler', 'ru'),
+array('node/1446', 'manufacturer/schaffner', 'ru'),
+array('node/1447', 'manufacturer/schaltbau', 'ru'),
+array('node/1448', 'manufacturer/schlegel', 'ru'),
+array('node/1449', 'manufacturer/schleicher', 'ru'),
+array('node/1450', 'manufacturer/schleifring', 'ru'),
+array('node/1451', 'manufacturer/schmalz', 'ru'),
+array('node/1452', 'manufacturer/schneeberger', 'ru'),
+array('node/1453', 'manufacturer/schott-ag', 'ru'),
+array('node/1454', 'manufacturer/secatec-electronic', 'ru'),
+array('node/1455', 'manufacturer/sefco', 'ru'),
+array('node/1456', 'manufacturer/selet', 'ru'),
+array('node/1457', 'manufacturer/seli', 'ru'),
+array('node/1458', 'manufacturer/seneca', 'ru'),
+array('node/1459', 'manufacturer/sensy', 'ru'),
+array('node/1460', 'manufacturer/sera-prodos', 'ru'),
+array('node/1461', 'manufacturer/shimadzu', 'ru'),
+array('node/1462', 'manufacturer/siko', 'ru'),
+array('node/1463', 'manufacturer/sitema', 'ru'),
+array('node/1464', 'manufacturer/sensopart', 'ru'),
+array('node/1465', 'manufacturer/schrack-technik', 'ru'),
+array('node/1466', 'manufacturer/smar', 'ru'),
+array('node/1467', 'manufacturer/sommer-automatik', 'ru'),
+array('node/1468', 'manufacturer/southco', 'ru'),
+array('node/1469', 'manufacturer/speck', 'ru'),
+array('node/1470', 'manufacturer/spinea', 'ru'),
+array('node/1471', 'manufacturer/spraying-systems', 'ru'),
+array('node/1472', 'manufacturer/sprint-electric', 'ru'),
+array('node/1473', 'manufacturer/slice', 'ru'),
+array('node/1474', 'manufacturer/smw-autoblok', 'ru'),
+array('node/1475', 'manufacturer/sonzogni-camme', 'ru'),
+array('node/1476', 'manufacturer/stabilus', 'ru'),
+array('node/1477', 'manufacturer/starline', 'ru'),
+array('node/1478', 'manufacturer/stasto-automation', 'ru'),
+array('node/1479', 'manufacturer/staubli', 'ru'),
+array('node/1480', 'manufacturer/steriline', 'ru'),
+array('node/1481', 'manufacturer/borgwarner', 'ru'),
+array('node/1482', 'manufacturer/hema-endustri', 'ru'),
+array('node/1483', 'manufacturer/hidroproser', 'ru'),
+array('node/1484', 'manufacturer/wexon-oy', 'ru'),
+array('node/1485', 'manufacturer/sterling-sihi', 'ru'),
+array('node/1486', 'manufacturer/stieber', 'ru'),
+array('node/1487', 'manufacturer/stm-spa', 'ru'),
+array('node/1488', 'manufacturer/stopstatic', 'ru'),
+array('node/1489', 'manufacturer/stransky-petrzik', 'ru'),
+array('node/1490', 'manufacturer/sunfab', 'ru'),
+array('node/1491', 'manufacturer/sunx', 'ru'),
+array('node/1492', 'manufacturer/suspa', 'ru'),
+array('node/1493', 'manufacturer/syneco', 'ru'),
+array('node/1494', 'manufacturer/syr', 'ru'),
+array('node/1495', 'manufacturer/systema-spa', 'ru'),
+array('node/1496', 'manufacturer/takex-sensor', 'ru'),
+array('node/1497', 'manufacturer/tapflo', 'ru'),
+array('node/1498', 'manufacturer/tb-woods', 'ru'),
+array('node/1499', 'manufacturer/tecsis', 'ru'),
+array('node/1500', 'manufacturer/tekno-stamap', 'ru'),
+array('node/1501', 'manufacturer/telemecanique', 'ru'),
+array('node/1502', 'manufacturer/temporiti-srl', 'ru'),
+array('node/1503', 'manufacturer/tetra-pak', 'ru'),
+array('node/1504', 'manufacturer/fluiten', 'ru'),
+array('node/1505', 'manufacturer/fortress-interlocks', 'ru'),
+array('node/1506', 'manufacturer/foseco', 'ru'),
+array('node/1507', 'manufacturer/gedore', 'ru'),
+array('node/1508', 'manufacturer/greisinger-electronic', 'ru'),
+array('node/1509', 'manufacturer/naf', 'ru'),
+array('node/1510', 'manufacturer/pmc-lone-star', 'ru'),
+array('node/1511', 'manufacturer/yoshitake', 'ru'),
+array('node/1512', 'manufacturer/marechal-electric-group', 'ru'),
+array('node/1513', 'manufacturer/brighetti-meccanica', 'ru'),
+array('node/1514', 'manufacturer/fey', 'ru'),
+array('node/1515', 'manufacturer/dites', 'ru'),
+array('node/1516', 'manufacturer/besdia', 'ru')
+);
+dsm($rows);
+foreach($rows as $row) {
+$path = array('alias' => $row[1], 'language' => $row[2], 'source' => $row[0]);
+if (!redirect_load_by_source($path['alias'], $path['language']) && drupal_valid_path($path['source'])) {
+    $redirect = new stdClass();
+    redirect_object_prepare($redirect);
+    $redirect->source = $path['alias'];
+    $redirect->redirect = $path['source'];
+    $redirect->language = $path['language'];
+    // Check if the redirect exists before saving.
+    $hash = redirect_hash($redirect);
+    $existing = redirect_load_by_hash($hash);
+    if (!$existing) {
+      redirect_save($redirect);
+    }
+    // If the existing redirect is disabled, re-enable it.
+    elseif (property_exists($existing, 'status') && $existing->status == 0) {
+      $existing->status = 1;
+      redirect_save($existing);
+    }
+  }
+}
+db_update('redirect')->fields(array('access' => REQUEST_TIME, 'count' => 1))->condition('rid', 2653, '>')->execute();
+
+*/
