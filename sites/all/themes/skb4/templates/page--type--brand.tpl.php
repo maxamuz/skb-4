@@ -73,9 +73,10 @@
  */
 ?>
 
-  <div id="header">
+<div id="header">
 
-    <div class="top-row-wrapper"><div class="top-row">
+  <div class="top-row-wrapper">
+    <div class="top-row">
       <?php if ($work_time): ?>
         <div class="work-time"><?php print $work_time; ?></div>
       <?php endif; ?>
@@ -91,86 +92,89 @@
         <a href="/" class="vk"></a>
         <a href="/" class="youtube"></a>
       </div>
-      <?php if ($page['search']): ?>
-        <div class="search-wrapper">
-        <?php print render($page['search']); ?>
-        </div>
-      <?php endif; ?>
-    </div></div>
-    
-    <div class="section clearfix">      
+    </div>
+  </div>
+  <?php if ($page['search']): ?>
+    <div class="search-wrapper">
+      <?php print render($page['search']); ?>
+    </div>
+  <?php endif; ?>
+  <div class="section clearfix">
 
     <div id="navigation">
 
       <?php if ($logo): ?>
-      <div class="logo-wrapper">
-        <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-          <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" width="140" />
-        </a>
-      </div>
+        <div class="logo-wrapper">
+          <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+            <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" width="140" />
+          </a>
+        </div>
       <?php endif; ?>
       <?php if ($phone): ?>
         <div class="phone"><?php print $phone; ?> <?php print $phone_dop; ?></div>
       <?php endif; ?>
 
       <div id="menu-for-mobile">
-      <?php if ($main_menu): ?>
-        <div class="main-menu-wrapper">
-        <?php /*print $main_menu*/ ?>
-        <?php if ($page['mobile_search']): ?>
-          <?php print render($page['mobile_search']); ?>
-        <?php endif; ?>
-         <?php //print render($main_menu_expanded);
-        print $main_menu; 
-              /*print  theme('links__system_main_menu', array('links' => $main_menu_tree, 'attributes' => array('id' => 'main-menu', 'class' => array('links', 'inline', 'clearfix')), 'heading' => t('Main menu')));*/ ?>
-        </div>
-       <div class="feedback"><a class="autodialog" data-dialog-ajax="true" data-dialog-width="960" href="/ordering">Сделать заказ</a></div>
-       <div class="mobile-bottom-wrapper">
-         <?php if ($phone): ?>
-          <div class="phone"><?php print $phone; ?> <?php print $phone_dop; ?></div>
-        <?php endif; ?>
-        <?php if ($email): ?>
-          <div class="email"><?php print $email; ?></div>
-        <?php endif; ?>
-          <div class="langs"></div>
-          <div class="social-links">
-            <a href="/" class="facebook"></a>
-            <a href="/" class="insta"></a>
-            <a href="/" class="vk"></a>
-            <a href="/" class="youtube"></a>
+        <?php if ($main_menu): ?>
+          <div class="main-menu-wrapper">
+            <?php /*print $main_menu*/ ?>
+            <?php if ($page['mobile_search']): ?>
+              <?php print render($page['mobile_search']); ?>
+            <?php endif; ?>
+            <?php //print render($main_menu_expanded);
+            print $main_menu;
+            /*print  theme('links__system_main_menu', array('links' => $main_menu_tree, 'attributes' => array('id' => 'main-menu', 'class' => array('links', 'inline', 'clearfix')), 'heading' => t('Main menu')));*/ ?>
           </div>
-        </div>
+          <div class="feedback"><a class="autodialog" data-dialog-ajax="true" data-dialog-width="960" href="/ordering">Сделать заказ</a></div>
+          <div class="mobile-bottom-wrapper">
+            <?php if ($phone): ?>
+              <div class="phone"><?php print $phone; ?> <?php print $phone_dop; ?></div>
+            <?php endif; ?>
+            <?php if ($email): ?>
+              <div class="email"><?php print $email; ?></div>
+            <?php endif; ?>
+            <div class="langs"></div>
+            <div class="social-links">
+              <a href="/" class="facebook"></a>
+              <a href="/" class="insta"></a>
+              <a href="/" class="vk"></a>
+              <a href="/" class="youtube"></a>
+            </div>
+          </div>
       </div>
-       <?php if ($page['catalog_menu']): ?>
-         <div class="catalog-menu-wrapper">
-         <?php print render($page['catalog_menu']); ?>
-         </div>
-       <?php endif; ?>
+      <?php if ($page['catalog_menu']): ?>
+        <div class="catalog-menu-wrapper">
+          <?php print render($page['catalog_menu']); ?>
+        </div>
       <?php endif; ?>
-      
+    <?php endif; ?>
+
     </div> <!-- //#navigation -->
 
-  </div></div> <!-- /.section, /#header -->
+  </div>
+</div> <!-- /.section, /#header -->
 
-  <div id="page-wrapper"><div id="page"><a id="top"></a>
+<div id="page-wrapper">
+  <div id="page"><a id="top"></a>
 
     <?php if ($page['slider']): ?>
-    <div id="slider" class="clearfix">      
+      <div id="slider" class="clearfix">
         <?php print render($page['slider']); ?>
-    </div>
+      </div>
     <?php endif; ?>
 
     <?php if ($page['content_top']): ?>
-    <div id="content-top" class="clearfix">      
+      <div id="content-top" class="clearfix">
         <?php print render($page['content_top']); ?>
-    </div>
+      </div>
     <?php endif; ?>
 
-  <div id="main-wrapper"><div id="main" class="clearfix">
+    <div id="main-wrapper">
+      <div id="main" class="clearfix">
 
-      <a id="main-content"></a>
+        <a id="main-content"></a>
         <?php if ($breadcrumb): ?>
-            <?php print $breadcrumb; ?>
+          <?php print $breadcrumb; ?>
         <?php endif; ?>
 
         <?php print render($title_prefix); ?>
@@ -189,78 +193,81 @@
           <div class="content">
             <?php print render($page['content']); ?>
           </div>
-      </div> <!-- /#content -->            
+        </div> <!-- /#content -->
 
-    </div> <!-- /#main, /#main-wrapper -->
+      </div> <!-- /#main, /#main-wrapper -->
 
-    <?php if ($page['content_bottom']): ?>
-    <div id="content-bottom" class="clearfix">      
-        <?php print render($page['content_bottom']); ?>
-    </div>
-    <?php endif; ?>
-  
-  </div> <!-- /.main-wrapper -->
-
-
-  <?php if ($page['footer_top']): ?>
-    <div id="footer-top">
-    <?php print render($page['footer_top']); ?>
-    </div>
-  <?php endif;
-  /* sites/all/themes/skb4/svg/footer_logo.svg */
-   ?>
-
-  <div id="footer">
-      <div class="bottom-row-wrapper"><div class="bottom-row">
-        <?php if ($logo): ?>
-        <div class="logo-wrapper">
-          <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-            <img src="/sites/all/themes/skb4/logo.svg" alt="<?php print t('Home'); ?>" width="167" />
-          </a>
-          <span>SKB-4.com - продажа оборудования<br> и запчастей
-из Европы в Россию и страны СНГ</span>
-          <span><a href="https://skb-4.ru" target="_blank">SKB-4.ru</a> - поставка и продажа гибких<br>
-муфт немецких брендов Centa и Rexnord</span>
+      <?php if ($page['content_bottom']): ?>
+        <div id="content-bottom" class="clearfix">
+          <?php print render($page['content_bottom']); ?>
         </div>
-        <?php endif; ?>
-        <div class="contacts">
-          <?php if ($phone): ?>
-            <div class="phone"><?php print $phone; ?> <?php print $phone_dop; ?></div>
+      <?php endif; ?>
+
+    </div> <!-- /.main-wrapper -->
+
+
+    <?php if ($page['footer_top']): ?>
+      <div id="footer-top">
+        <?php print render($page['footer_top']); ?>
+      </div>
+    <?php endif;
+    /* sites/all/themes/skb4/svg/footer_logo.svg */
+    ?>
+
+    <div id="footer">
+      <div class="bottom-row-wrapper">
+        <div class="bottom-row">
+          <?php if ($logo): ?>
+            <div class="logo-wrapper">
+              <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+                <img src="/sites/all/themes/skb4/logo.svg" alt="<?php print t('Home'); ?>" width="167" />
+              </a>
+              <span>SKB-4.com - продажа оборудования<br> и запчастей
+                из Европы в Россию и страны СНГ</span>
+              <span><a href="https://skb-4.ru" target="_blank">SKB-4.ru</a> - поставка и продажа гибких<br>
+                муфт немецких брендов Centa и Rexnord</span>
+            </div>
           <?php endif; ?>
-          <?php if ($email): ?>
-            <div class="email"><?php print $email; ?></div>
-          <?php endif; ?>
-          <?php if ($address): ?>
-            <div class="address"><?php print $address; ?></div>
-          <?php endif; ?>
-          <div class="social-links">
-            <a href="/" class="facebook"></a>
-            <a href="/" class="insta"></a>
-            <a href="/" class="vk"></a>
-            <a href="/" class="youtube"></a>
+          <div class="contacts">
+            <?php if ($phone): ?>
+              <div class="phone"><?php print $phone; ?> <?php print $phone_dop; ?></div>
+            <?php endif; ?>
+            <?php if ($email): ?>
+              <div class="email"><?php print $email; ?></div>
+            <?php endif; ?>
+            <?php if ($address): ?>
+              <div class="address"><?php print $address; ?></div>
+            <?php endif; ?>
+            <div class="social-links">
+              <a href="/" class="facebook"></a>
+              <a href="/" class="insta"></a>
+              <a href="/" class="vk"></a>
+              <a href="/" class="youtube"></a>
+            </div>
           </div>
         </div>
-      </div></div>
-    <div class="section">
-      
-      <?php if ($page['footer']): ?>
+      </div>
+      <div class="section">
 
-        <?php print render($page['footer']); ?>
-      <?php endif; ?>
-      <?php if ($main_menu): ?>
-        <div class="secondary-menu-wrapper">
-        <?php /*print $main_menu*/ ?>          
-          <?php print theme('links__system_secondary_menu', array('links' => $secondary_menu, 'attributes' => array('id' => 'secondary-menu', 'class' => array('links', 'inline', 'clearfix')))); ?>
-          <div class="feedback"><a class="autodialog" data-dialog-ajax="true" data-dialog-width="960" href="/ordering">Заказ оборудования</a></div>
-        </div> <!-- //#secondary-menu -->
+        <?php if ($page['footer']): ?>
+
+          <?php print render($page['footer']); ?>
         <?php endif; ?>
+        <?php if ($main_menu): ?>
+          <div class="secondary-menu-wrapper">
+            <?php /*print $main_menu*/ ?>
+            <?php print theme('links__system_secondary_menu', array('links' => $secondary_menu, 'attributes' => array('id' => 'secondary-menu', 'class' => array('links', 'inline', 'clearfix')))); ?>
+            <div class="feedback"><a class="autodialog" data-dialog-ajax="true" data-dialog-width="960" href="/ordering">Заказ оборудования</a></div>
+          </div> <!-- //#secondary-menu -->
+        <?php endif; ?>
+      </div>
     </div>
+
+    <?php if ($page['footer_bottom']): ?>
+      <div id="footer-bottom">
+        <?php print render($page['footer_bottom']); ?>
+      </div>
+    <?php endif; ?>
+
   </div>
-
-  <?php if ($page['footer_bottom']): ?>
-    <div id="footer-bottom">
-    <?php print render($page['footer_bottom']); ?>
-    </div>
-  <?php endif; ?>
-
-  </div></div> <!-- /#page, /#page-wrapper -->
+</div> <!-- /#page, /#page-wrapper -->

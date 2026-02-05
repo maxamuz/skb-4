@@ -92,16 +92,22 @@
         <a href="/" class="vk"></a>
         <a href="/" class="youtube"></a>
       </div>
-      <?php if ($page['search']): ?>
-        <div class="search-wrapper">
-          <?php print render($page['search']); ?>
-        </div>
-      <?php endif; ?>
+      <?php //if ($page['search']): ?>
+        <!--div class="search-wrapper">
+          <?php //print render($page['search']); ?>
+        </div-->
+      <?php //endif; ?>
     </div>
   </div>
   <?php if ($page['top_search']): ?>
     <div id="top_search" class="top_search">
       <?php print render($page['top_search']); ?>
+    </div>
+  <?php endif; ?>
+
+  <?php if ($page['search']): ?>
+    <div class="search-wrapper">
+      <?php print render($page['search']); ?>
     </div>
   <?php endif; ?>
 

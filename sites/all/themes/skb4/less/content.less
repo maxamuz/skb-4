@@ -204,6 +204,7 @@ textarea {
 }
 #main-wrapper {
   background: #f7f9fc;
+  margin-top: 50px;
 }
 #page.open-menu {
   position: relative;
@@ -5219,7 +5220,7 @@ table.feauters {
 }
 
 .cookie-consent.visible {
-    display: flex; /* Показываем блок cookie только при необходимости */
+  display: flex; /* Показываем блок cookie только при необходимости */
 }
 
 .cookie-consent-content {
@@ -5270,4 +5271,61 @@ table.feauters {
 
 .btn-decline:hover {
   background-color: #5a6268;
+}
+
+form#skb4-helper-search-form--2 {
+  border-top: 1px solid #cccccc87;
+  border-bottom: 1px solid #cccccc87;
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .form-item {
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
+    input#edit-text--2 {
+      height: 22px;
+      border: 0 none !important;
+      box-sizing: border-box;
+      background: transparent;
+      &:focus {
+        outline: none;
+      }
+    }
+    div#edit-actions--2 {
+      margin: 0;
+      width: 30px;
+      height: 16px;
+    }
+    input#edit-submit--3 {
+      padding: 0;
+      margin: 0;
+      width: 30px;
+      height: 16px;
+      background: transparent
+        url(/sites/all/themes/skb4/svg/search_top_icon.svg) center center
+        no-repeat;
+      color: transparent;
+      font-size: 0;
+      min-width: 30px;
+    }
+    input#edit-submit--4 {
+      padding: 0;
+      margin: 0;
+      width: 30px;
+      height: 16px;
+      background: transparent
+        url(/sites/all/themes/skb4/svg/search_top_icon.svg) center center
+        no-repeat;
+      color: transparent;
+      font-size: 0;
+      min-width: 30px;
+    }
+  }
+}
+
+.ui-autocomplete-fields {
+  display: flex !important;
+  justify-content: flex-start !important;
 }
