@@ -99,7 +99,12 @@
       <?php endif; ?>
     </div>
   </div>
-  
+  <?php if ($page['top_search']): ?>
+    <div id="top_search" class="top_search">
+      <?php print render($page['top_search']); ?>
+    </div>
+  <?php endif; ?>
+
   <div class="section clearfix">
 
     <div id="navigation">

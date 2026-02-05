@@ -17,7 +17,7 @@
 
       if (window.innerWidth <= "768") {
         $(
-          "#block-views-news-block-1 .view-content, #block-views-news-block-2 .view-content"
+          "#block-views-news-block-1 .view-content, #block-views-news-block-2 .view-content",
         ).mCustomScrollbar({
           axis: "x",
           // setTop: 0
@@ -28,7 +28,7 @@
         });
 
         $(
-          "#block-skb4-helper-skb4-helper-catalog .category.with-subcategories, #block-skb4-helper-skb4-helper-catalog-else .category.with-subcategories, #block-system-main .category.with-subcategories"
+          "#block-skb4-helper-skb4-helper-catalog .category.with-subcategories, #block-skb4-helper-skb4-helper-catalog-else .category.with-subcategories, #block-system-main .category.with-subcategories",
         ).each(function () {
           let cat = $(this);
           // $(cat).toggleClass('show');
@@ -47,7 +47,7 @@
       }
 
       $(
-        ".taxonomy-term.vocabulary-product-category .cats > .item-list"
+        ".taxonomy-term.vocabulary-product-category .cats > .item-list",
       ).mCustomScrollbar({
         axis: "y",
         // setTop: 0
@@ -62,30 +62,30 @@
           if ($(but).hasClass("open")) {
             $(but).removeClass("open");
             $(
-              ".taxonomy-term.vocabulary-product-category .cats > .item-list"
+              ".taxonomy-term.vocabulary-product-category .cats > .item-list",
             ).slideDown();
             $(".taxonomy-term.vocabulary-product-category .cats").css(
               "height",
-              "340px"
+              "340px",
             );
             $(
-              "#category-main .taxonomy-term.vocabulary-product-category .cats h3"
+              "#category-main .taxonomy-term.vocabulary-product-category .cats h3",
             ).css("margin-bottom", "20px");
           } else {
             $(but).addClass("open");
             $(".taxonomy-term.vocabulary-product-category .cats").css(
               "height",
-              "auto"
+              "auto",
             );
             $(
-              ".taxonomy-term.vocabulary-product-category .cats > .item-list"
+              ".taxonomy-term.vocabulary-product-category .cats > .item-list",
             ).slideUp(400, function () {
               $(
-                "#category-main .taxonomy-term.vocabulary-product-category .cats h3"
+                "#category-main .taxonomy-term.vocabulary-product-category .cats h3",
               ).css("margin-bottom", "0");
             });
           }
-        }
+        },
       );
 
       if ($(".view-id-references").length) {
@@ -125,11 +125,11 @@
             });
 
           $(".view-id-references").before(
-            "<div class='jcarousel-pagination-n'></div>"
+            "<div class='jcarousel-pagination-n'></div>",
           );
 
           $(".jcarousel-pagination-n").append(
-            "<div class='section'><a href='#' class='jcarousel-control-prev-n' data-jcarouselcontrol='true'></a><a href='#' class='jcarousel-control-next-n' data-jcarouselcontrol='true'></a></div>"
+            "<div class='section'><a href='#' class='jcarousel-control-prev-n' data-jcarouselcontrol='true'></a><a href='#' class='jcarousel-control-next-n' data-jcarouselcontrol='true'></a></div>",
           );
 
           $(".jcarousel-control-prev-n").jcarouselControl({
@@ -203,11 +203,11 @@
             });
 
           $(".views-field-field-news-gallery").before(
-            "<div class='jcarousel-pagination-n'></div>"
+            "<div class='jcarousel-pagination-n'></div>",
           );
 
           $(".jcarousel-pagination-n").append(
-            "<div class='section'><a href='#' class='jcarousel-control-prev-n' data-jcarouselcontrol='true'></a><a href='#' class='jcarousel-control-next-n' data-jcarouselcontrol='true'></a></div>"
+            "<div class='section'><a href='#' class='jcarousel-control-prev-n' data-jcarouselcontrol='true'></a><a href='#' class='jcarousel-control-next-n' data-jcarouselcontrol='true'></a></div>",
           );
 
           $(".jcarousel-control-prev-n").jcarouselControl({
@@ -269,7 +269,7 @@
 
       var $page = $("html, body");
       $(
-        '.node-brand.node-view-mode-full a[href*="#"], .category-navigation a[href*="#"]'
+        '.node-brand.node-view-mode-full a[href*="#"], .category-navigation a[href*="#"]',
       ).click(function (event) {
         event.preventDefault();
         let tmp = $.attr(this, "href").split("#");
@@ -282,7 +282,7 @@
             {
               scrollTop: $("#" + blockID).offset().top - 150,
             },
-            800
+            800,
           );
         }
         return false;
@@ -296,14 +296,14 @@
       }
 
       $(
-        "body.node-type-product #main-wrapper #product-main .node-product .product-content-wrapper .field-name-body table, .node-brand .body-wrapper .field-name-body table"
+        "body.node-type-product #main-wrapper #product-main .node-product .product-content-wrapper .field-name-body table, .node-brand .body-wrapper .field-name-body table",
       ).each(function () {
         $(this).parent("div").addClass("with-table");
       });
 
       $(
         ".node-brand, #block-skb4-helper-skb4-helper-current-offer",
-        context
+        context,
       ).once("current-offer-wrapper", function () {
         $("table#current-offers", this).each(function () {
           var table = $(this);
@@ -342,7 +342,7 @@
               }
             }
           });
-        }
+        },
       );
 
       $(".field-name-field-brend-intro", context).each(function () {
@@ -400,7 +400,7 @@
               btn.text(file_name);
               $(
                 "input[id^='edit-submitted-attach-upload-button']",
-                wrapper1
+                wrapper1,
               ).mousedown();
               /*if( lbl.is( ":visible" ) ){
                 lbl.text( file_name );
@@ -408,11 +408,11 @@
                 btn.text( file_name );*/
             })
             .change();
-        }
+        },
       );
 
       $(
-        ".form-managed-file input[id^='edit-submitted-attach-upload-button']"
+        ".form-managed-file input[id^='edit-submitted-attach-upload-button']",
       ).css({ display: "none" });
       /*$('.form-managed-file').delegate( 'input.form-file', 'change', function () {
         console.log('tut2');
@@ -442,8 +442,10 @@
 })(
   window,
   document,
-  "https://cdn-ru.bitrix24.ru/b34340734/crm/site_button/loader_2_vow86j.js"
+  "https://cdn-ru.bitrix24.ru/b34340734/crm/site_button/loader_2_vow86j.js",
 );
+
+// ---- Скрипт для cookie ---- //
 
 // ---- Скрипт для cookie ---- //
 
@@ -454,22 +456,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Проверяем, было ли уже принято решение
   if (
-    localStorage.getItem("cookiesAccepted") === "true" ||
-    localStorage.getItem("cookiesAccepted") === "false"
+    localStorage.getItem("cookiesAccepted") !== "true" &&
+    localStorage.getItem("cookiesAccepted") !== "false"
   ) {
-    consentPanel.classList.add("hidden");
+    // Если решения не было, показываем панель
+    consentPanel.classList.add("visible");
   }
+  // Если решение уже было принято, ничего не делаем - панель останется скрытой благодаря CSS
 
   // Обработчик кнопки "Принять"
   acceptBtn.addEventListener("click", function () {
     localStorage.setItem("cookiesAccepted", "true");
+    consentPanel.classList.remove("visible");
     consentPanel.classList.add("hidden");
   });
 
   // Обработчик кнопки "Отклонить"
   declineBtn.addEventListener("click", function () {
     localStorage.setItem("cookiesAccepted", "false");
+    consentPanel.classList.remove("visible");
     consentPanel.classList.add("hidden");
   });
 });
-
