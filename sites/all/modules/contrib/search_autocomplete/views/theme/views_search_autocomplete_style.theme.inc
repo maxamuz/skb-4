@@ -121,16 +121,20 @@ function template_preprocess_views_search_autocomplete_style(&$vars) {
     // Check case between $no_results and $all_results
     if (empty($vars["rows"])) {
       // No results case.
-      $no_results = str_replace('[search-phrase]', $view->autocompletion_data['user_input'], $view->autocompletion_data['no_results']);
-      $suggestion = json_decode($no_results);
+      $suggestion = json_decode($view->autocompletion_data['no_results']);
     }
     else {
       // All results case.
-      $no_results = str_replace('[search-phrase]', $view->autocompletion_data['user_input'], $view->autocompletion_data['all_results']);
-      $suggestion = json_decode($no_results);
+      $suggestion = json_decode($view->autocompletion_data['all_results']);
     }
     if (!empty($suggestion->label)) {
-      $suggestion->fields['label'] = html_entity_decode(stripslashes(str_replace('[search-phrase]', $view->autocompletion_data['user_input'], $suggestion->label)));
+      // Translate the label first, then replace the search phrase token.
+      $translated_label = t($suggestion->label);
+      $suggestion->fields['label'] = html_entity_decode(stripslashes(str_replace('[search-phrase]', $view->autocompletion_data['user_input'], $translated_label)));
+    }
+    // Replace the search phrase token in value as well.
+    if (!empty($suggestion->value)) {
+      $suggestion->value = str_replace('[search-phrase]', $view->autocompletion_data['user_input'], $suggestion->value);
     }
     $vars["rows"][] = $suggestion;
   }
