@@ -452,7 +452,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const consentPanel = document.getElementById("cookie-consent");
   const acceptBtn = document.getElementById("accept-cookies");
-  const declineBtn = document.getElementById("decline-cookies");
 
   // Проверяем, было ли уже принято решение
   if (
@@ -467,13 +466,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Обработчик кнопки "Принять"
   acceptBtn.addEventListener("click", function () {
     localStorage.setItem("cookiesAccepted", "true");
-    consentPanel.classList.remove("visible");
-    consentPanel.classList.add("hidden");
-  });
-
-  // Обработчик кнопки "Отклонить"
-  declineBtn.addEventListener("click", function () {
-    localStorage.setItem("cookiesAccepted", "false");
     consentPanel.classList.remove("visible");
     consentPanel.classList.add("hidden");
   });
